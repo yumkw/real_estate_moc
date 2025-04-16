@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>案件概要登録・編集 - 不動産プロジェクト書類管理</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/pages.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- サイドバー -->
+    <div class="sidebar">
+      <div class="sidebar-sticky">
+        <div class="p-4">
+          <a href="02_User_home.html" class="navbar-brand">ドキュメント管理</a>
+        </div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="02_User_home.html">
+              <i class="fas fa-home mr-2"></i>
+              ホーム
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-file-alt mr-2"></i>
+              最近のドキュメント
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="06_User_notification.html">
+              <i class="fas fa-bell mr-2"></i>
+              通知
+              <span class="badge badge-primary ml-2">3</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="p-4 mt-4">
+          <h6
+            class="text-muted text-uppercase"
+            style="font-size: var(--fs-xs); letter-spacing: 1px"
+          >
+            プロジェクト
+          </h6>
+        </div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="11_project_home.html">
+              <i class="fas fa-building mr-2"></i>
+              グリーンハイツ渋谷
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-building mr-2"></i>
+              パークレジデンス六本木
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-building mr-2"></i>
+              サンライズガーデン横浜
+            </a>
+          </li>
+        </ul>
+
+        <div class="p-4 mt-4">
+          <h6
+            class="text-muted text-uppercase"
+            style="font-size: var(--fs-xs); letter-spacing: 1px"
+          >
+            設定
+          </h6>
+        </div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="09_User_account_menu.html">
+              <i class="fas fa-cog mr-2"></i>
+              アカウント設定
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="10_rules_settings.html">
+              <i class="fas fa-sliders-h mr-2"></i>
+              ルール設定
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-users mr-2"></i>
+              ユーザー管理
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="01_User_login.html">
+              <i class="fas fa-sign-out-alt mr-2"></i>
+              ログアウト
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <div class="main-content">
+      <!-- プロジェクトバナー -->
+      <div class="project-banner">
+        <div class="project-details">
+          <h1>案件概要登録・編集</h1>
+          <div class="project-meta">
+            <span class="badge badge-success">新規作成</span>
+          </div>
+        </div>
+
+        <div class="d-flex">
+          <button class="btn btn-secondary mr-2">
+            <i class="fas fa-times mr-1"></i> キャンセル
+          </button>
+          <button class="btn btn-primary">
+            <i class="fas fa-save mr-1"></i> 保存
+          </button>
+        </div>
+      </div>
+
+      <div class="form-container">
+        <form>
+          <!-- 基本情報セクション -->
+          <div class="form-section">
+            <h3 class="form-section-title">
+              <i class="fas fa-info-circle"></i> 基本情報
+            </h3>
+
+            <div class="form-row">
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="project-name" class="required-label"
+                    >案件名</label
+                  >
+                  <input
+                    type="text"
+                    id="project-name"
+                    class="form-control"
+                    placeholder="例: グリーンハイツ渋谷"
+                  />
+                </div>
+              </div>
+
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="project-type" class="required-label"
+                    >物件種別</label
+                  >
+                  <select id="project-type" class="form-control">
+                    <option value="">選択してください</option>
+                    <option>マンション</option>
+                    <option>アパート</option>
+                    <option>戸建て</option>
+                    <option>土地</option>
+                    <option>オフィスビル</option>
+                    <option>商業施設</option>
+                    <option>その他</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="transaction-type" class="required-label"
+                    >取引種別</label
+                  >
+                  <select id="transaction-type" class="form-control">
+                    <option value="">選択してください</option>
+                    <option>売買</option>
+                    <option>賃貸</option>
+                    <option>売買・賃貸</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="property-status">物件状態</label>
+                  <select id="property-status" class="form-control">
+                    <option value="">選択してください</option>
+                    <option>新築</option>
+                    <option>中古</option>
+                    <option>リノベーション済み</option>
+                    <option>建築予定</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-col-full">
+                <div class="form-group">
+                  <label for="project-tags">タグ</label>
+                  <div class="tag-container">
+                    <span class="tag"
+                      >マンション <i class="fas fa-times"></i
+                    ></span>
+                    <span class="tag">売買 <i class="fas fa-times"></i></span>
+                    <span class="tag"
+                      >リノベーション <i class="fas fa-times"></i
+                    ></span>
+                    <input
+                      type="text"
+                      class="tag-input"
+                      placeholder="タグを入力..."
+                    />
+                  </div>
+                  <div class="input-hint">
+                    <i class="fas fa-info-circle"></i>
+                    複数のタグを入力する場合はカンマで区切るか、Enterキーを押してください
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 所在地情報セクション -->
+          <div class="form-section">
+            <h3 class="form-section-title">
+              <i class="fas fa-map-marker-alt"></i> 所在地情報
+            </h3>
+
+            <div class="form-row">
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="postal-code" class="required-label"
+                    >郵便番号</label
+                  >
+                  <div class="address-lookup">
+                    <input
+                      type="text"
+                      id="postal-code"
+                      class="form-control"
+                      placeholder="例: 150-0041"
+                    />
+                    <button type="button" class="btn btn-outline btn-sm">
+                      <i class="fas fa-search mr-1"></i> 住所検索
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="prefecture" class="required-label"
+                    >都道府県</label
+                  >
+                  <select id="prefecture" class="form-control">
+                    <option value="">選択してください</option>
+                    <option>東京都</option>
+                    <option>神奈川県</option>
+                    <option>千葉県</option>
+                    <option>埼玉県</option>
+                    <!-- 他の都道府県もここに追加 -->
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="city" class="required-label">市区町村</label>
+                  <input
+                    type="text"
+                    id="city"
+                    class="form-control"
+                    placeholder="例: 渋谷区"
+                  />
+                </div>
+              </div>
+
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="street-address" class="required-label"
+                    >番地・建物名</label
+                  >
+                  <input
+                    type="text"
+                    id="street-address"
+                    class="form-control"
+                    placeholder="例: 神南1-2-3 グリーンハイツ101"
+                  />
+                </div>
+              </div>
+
+              <div class="form-col-full">
+                <div class="form-group">
+                  <label for="property-map">地図</label>
+                  <div class="border p-3 rounded">
+                    <img
+                      src="map-placeholder.jpg"
+                      alt="地図プレビュー"
+                      style="width: 100%; height: 200px; object-fit: cover"
+                    />
+                  </div>
+                  <div class="input-hint">
+                    <i class="fas fa-info-circle"></i>
+                    住所を入力すると自動的に地図が表示されます
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 物件概要セクション -->
+          <div class="form-section">
+            <h3 class="form-section-title">
+              <i class="fas fa-building"></i> 物件概要
+            </h3>
+
+            <div class="form-row">
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="property-size" class="required-label"
+                    >面積（㎡）</label
+                  >
+                  <input
+                    type="number"
+                    id="property-size"
+                    class="form-control"
+                    placeholder="例: 85.5"
+                  />
+                </div>
+              </div>
+
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="room-layout">間取り</label>
+                  <input
+                    type="text"
+                    id="room-layout"
+                    class="form-control"
+                    placeholder="例: 3LDK"
+                  />
+                </div>
+              </div>
+
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="construction-year">築年月</label>
+                  <input
+                    type="month"
+                    id="construction-year"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="structure">構造</label>
+                  <select id="structure" class="form-control">
+                    <option value="">選択してください</option>
+                    <option>RC（鉄筋コンクリート）</option>
+                    <option>SRC（鉄骨鉄筋コンクリート）</option>
+                    <option>木造</option>
+                    <option>軽量鉄骨</option>
+                    <option>その他</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="floors">階数／所在階</label>
+                  <div class="d-flex align-items-center">
+                    <div style="flex: 1">
+                      <input
+                        type="number"
+                        id="total-floors"
+                        class="form-control"
+                        placeholder="総階数"
+                      />
+                    </div>
+                    <span class="mx-2">階建て／</span>
+                    <div style="flex: 1">
+                      <input
+                        type="number"
+                        id="property-floor"
+                        class="form-control"
+                        placeholder="所在階"
+                      />
+                    </div>
+                    <span class="ml-2">階</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="property-price" class="required-label"
+                    >価格（円）</label
+                  >
+                  <input
+                    type="number"
+                    id="property-price"
+                    class="form-control is-invalid"
+                    placeholder="例: 85000000"
+                  />
+                  <div class="invalid-feedback">価格を入力してください</div>
+                </div>
+              </div>
+
+              <div class="form-col-full">
+                <div class="form-group">
+                  <label for="property-description">物件説明</label>
+                  <textarea
+                    id="property-description"
+                    class="form-control"
+                    rows="4"
+                    placeholder="物件の特徴や魅力的なポイントなどを入力してください"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 写真・資料セクション -->
+          <div class="form-section">
+            <h3 class="form-section-title">
+              <i class="fas fa-images"></i> 写真・資料
+            </h3>
+
+            <div class="form-row">
+              <div class="form-col-full">
+                <div class="form-group">
+                  <label>メイン画像</label>
+                  <div class="upload-placeholder">
+                    <i class="fas fa-camera"></i>
+                    <p>クリックして画像をアップロード</p>
+                    <small class="text-muted">またはドラッグ＆ドロップ</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-col-full">
+                <div class="form-group">
+                  <label>追加画像</label>
+                  <div class="preview-container">
+                    <div class="preview-item">
+                      <img src="image-placeholder-1.jpg" alt="プレビュー" />
+                      <div class="remove-preview">
+                        <i class="fas fa-times"></i>
+                      </div>
+                    </div>
+                    <div class="preview-item">
+                      <img src="image-placeholder-2.jpg" alt="プレビュー" />
+                      <div class="remove-preview">
+                        <i class="fas fa-times"></i>
+                      </div>
+                    </div>
+                    <div
+                      class="upload-placeholder"
+                      style="width: 100px; height: 100px; margin: 0"
+                    >
+                      <i class="fas fa-plus"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 仲介会社・担当者情報セクション -->
+          <div class="form-section">
+            <h3 class="form-section-title">
+              <i class="fas fa-user-tie"></i> 仲介会社・担当者情報
+            </h3>
+
+            <div class="form-row">
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="company-name">仲介会社名</label>
+                  <input
+                    type="text"
+                    id="company-name"
+                    class="form-control"
+                    placeholder="例: 〇〇不動産"
+                  />
+                </div>
+              </div>
+
+              <div class="form-col">
+                <div class="form-group">
+                  <label for="company-license">免許番号</label>
+                  <input
+                    type="text"
+                    id="company-license"
+                    class="form-control"
+                    placeholder="例: 東京都知事 (1) 第00000号"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>担当者情報</label>
+              <div class="agents-container">
+                <div class="agent-item">
+                  <div class="agent-avatar">ST</div>
+                  <div class="agent-info">
+                    <div class="agent-name">鈴木 太郎</div>
+                    <div class="agent-company">〇〇不動産 渋谷店</div>
+                  </div>
+                  <div class="agent-role">
+                    <select class="form-control form-control-sm">
+                      <option>売主担当</option>
+                      <option selected>買主担当</option>
+                      <option>物件担当</option>
+                      <option>その他</option>
+                    </select>
+                    <button class="btn btn-sm btn-outline-danger">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="agent-item">
+                  <div class="agent-avatar">HT</div>
+                  <div class="agent-info">
+                    <div class="agent-name">田中 花子</div>
+                    <div class="agent-company">△△不動産 新宿店</div>
+                  </div>
+                  <div class="agent-role">
+                    <select class="form-control form-control-sm">
+                      <option selected>売主担当</option>
+                      <option>買主担当</option>
+                      <option>物件担当</option>
+                      <option>その他</option>
+                    </select>
+                    <button class="btn btn-sm btn-outline-danger">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <button type="button" class="btn btn-outline mt-3">
+                <i class="fas fa-plus mr-1"></i> 担当者を追加
+              </button>
+            </div>
+          </div>
+
+          <!-- ボタングループ -->
+          <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-secondary">キャンセル</button>
+            <div>
+              <button type="button" class="btn btn-outline mr-2">
+                下書き保存
+              </button>
+              <button type="submit" class="btn btn-primary">
+                保存して完了
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

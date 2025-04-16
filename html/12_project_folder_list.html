@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>フォルダ構成 - 不動産プロジェクト書類管理</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/layout.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/pages.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
+    <style>
+      :root {
+        --sidebar-bg: #2d3436;
+        --sidebar-text: #f5f5f5;
+        --sidebar-hover: #34495e;
+        --topbar-bg: #2d3436;
+        --topbar-text: #f5f5f5;
+        --icon-color: #f5f5f5;
+        --dropdown-bg: #ffffff;
+        --dropdown-text: #333333;
+        --dropdown-hover: #f8f9fa;
+      }
+
+      body {
+        padding: 0;
+        margin: 0;
+        overflow-x: hidden;
+      }
+
+      /* サイドバーの表示・非表示の切り替え用スタイル */
+      .sidebar {
+        position: fixed;
+        left: -250px;
+        top: 60px;
+        height: calc(100vh - 60px);
+        width: 250px;
+        background-color: var(--sidebar-bg);
+        color: var(--sidebar-text);
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        transition: left 0.3s ease;
+        z-index: 1000;
+        overflow-y: auto;
+        padding-bottom: 20px;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+      }
+
+      .sidebar.show {
+        left: 0;
+      }
+
+      .sidebar-sticky {
+        padding-top: 15px;
+      }
+
+      .sidebar a {
+        color: var(--sidebar-text);
+        text-decoration: none;
+      }
+
+      .sidebar .nav-item {
+        margin-bottom: 5px;
+      }
+
+      .sidebar .nav-link {
+        padding: 10px 15px;
+        display: flex;
+        align-items: center;
+        border-radius: 4px;
+        margin: 0 10px;
+        transition: background-color 0.2s;
+      }
+
+      .sidebar .nav-link:hover {
+        background-color: var(--sidebar-hover);
+      }
+
+      .sidebar .nav-link.active {
+        background-color: rgba(255, 255, 255, 0.1);
+        font-weight: 500;
+      }
+
+      .sidebar .nav-link i {
+        margin-right: 10px;
+        width: 16px;
+        text-align: center;
+      }
+
+      .sidebar-heading {
+        padding: 10px 15px;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: rgba(255, 255, 255, 0.6);
+        font-weight: 500;
+      }
+
+      .main-content {
+        padding-top: 80px;
+        padding-left: 20px;
+        padding-right: 20px;
+        transition: all 0.3s ease;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        margin-left: 0;
+      }
+
+      .main-content.sidebar-open {
+        margin-left: 250px;
+        width: calc(100% - 250px);
+        max-width: calc(100% - 250px);
+      }
+
+      /* トップバー */
+      .top-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background-color: var(--topbar-bg);
+        color: var(--topbar-text);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        z-index: 1000;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .toggle-sidebar {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0;
+        margin-right: 20px;
+        color: var(--icon-color);
+      }
+
+      .top-bar-brand {
+        font-weight: bold;
+        font-size: 18px;
+        margin-right: auto;
+        color: var(--topbar-text);
+      }
+
+      .top-bar-actions {
+        display: flex;
+        align-items: center;
+      }
+
+      .top-bar-notification {
+        position: relative;
+        margin-right: 20px;
+      }
+
+      .top-bar-notification a {
+        color: var(--icon-color);
+      }
+
+      .notification-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: var(--danger);
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .top-bar-user {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        position: relative;
+        color: var(--topbar-text);
+      }
+
+      .user-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.2);
+        color: var(--icon-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+      }
+
+      .user-name {
+        margin-right: 5px;
+      }
+
+      /* アカウントメニュードロップダウン */
+      .account-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 200px;
+        background-color: var(--dropdown-bg);
+        color: var(--dropdown-text);
+        border: 1px solid var(--gray-200);
+        border-radius: 4px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        display: none;
+        z-index: 1001;
+        margin-top: 5px;
+        overflow: hidden;
+      }
+
+      .account-menu.show {
+        display: block;
+      }
+
+      .account-menu-item {
+        padding: 12px 15px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .account-menu-item:hover {
+        background-color: var(--dropdown-hover);
+      }
+
+      .account-menu-item i {
+        margin-right: 10px;
+        width: 16px;
+        text-align: center;
+        color: var(--primary);
+      }
+
+      /* メディアクエリ */
+      @media (min-width: 1200px) {
+        .main-content {
+          padding-left: 40px;
+          padding-right: 40px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- トップバー -->
+    <div class="top-bar">
+      <button class="toggle-sidebar" id="toggleSidebar">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="top-bar-brand">不動産プロジェクト書類管理</div>
+      <div class="top-bar-actions">
+        <div class="top-bar-notification">
+          <a href="06_User_notification.html" class="btn-icon">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">3</span>
+          </a>
+        </div>
+        <div class="top-bar-user" id="userMenuToggle">
+          <div class="user-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <span class="user-name">鈴木太郎</span>
+          <i class="fas fa-chevron-down"></i>
+
+          <!-- アカウントメニュードロップダウン -->
+          <div class="account-menu" id="accountMenu">
+            <div class="account-menu-item">
+              <i class="fas fa-question-circle"></i>
+              <span>問い合わせ</span>
+            </div>
+            <div class="account-menu-item">
+              <i class="fas fa-cog"></i>
+              <span>設定</span>
+            </div>
+            <!-- 管理者ユーザーの場合のみ表示 -->
+            <div class="account-menu-item admin-only">
+              <i class="fas fa-users-cog"></i>
+              <span>管理者メニュー</span>
+            </div>
+            <hr style="margin: 5px 0; border-top: 1px solid var(--gray-200)" />
+            <div class="account-menu-item">
+              <i class="fas fa-sign-out-alt"></i>
+              <span>ログアウト</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- サイドバー -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="11_project_home.html">
+              <i class="fas fa-info-circle"></i>
+              案件概要
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="12_project_folder_list.html">
+              <i class="fas fa-folder"></i>
+              フォルダ構成
+              <span class="badge badge-light ml-auto">8</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="13_project_document_check.html">
+              <i class="fas fa-file-alt"></i>
+              書類一覧
+              <span class="badge badge-light ml-auto">24</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="15_project_issues_extraction.html">
+              <i class="fas fa-exclamation-circle"></i>
+              指摘事項
+              <span class="badge badge-danger ml-auto">3</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="16_project_access_permissions.html">
+              <i class="fas fa-users"></i>
+              アクセス権限
+            </a>
+          </li>
+        </ul>
+
+        <div class="sidebar-heading mt-4">他のプロジェクト</div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-building"></i>
+              パークレジデンス六本木
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-building"></i>
+              サンライズガーデン横浜
+            </a>
+          </li>
+        </ul>
+
+        <div class="sidebar-heading mt-4">設定</div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="02_User_home.html">
+              <i class="fas fa-home"></i>
+              ホーム画面に戻る
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <div class="main-content" id="mainContent">
+      <div class="project-header">
+        <div class="project-title">
+          <h1>グリーンハイツ渋谷</h1>
+          <div>
+            <span class="badge badge-success p-2">進行中</span>
+          </div>
+        </div>
+        <div class="project-meta">
+          <div class="project-meta-item">
+            <i class="fas fa-map-marker-alt mr-1"></i>
+            <span>東京都渋谷区神南1-2-3</span>
+          </div>
+          <div class="project-meta-item">
+            <i class="fas fa-user mr-1"></i>
+            <span>担当: 鈴木太郎</span>
+          </div>
+          <div class="project-meta-item">
+            <i class="fas fa-calendar mr-1"></i>
+            <span>開始日: 2025/02/15</span>
+          </div>
+          <div class="project-meta-item">
+            <i class="fas fa-clock mr-1"></i>
+            <span>最終更新: 2025/04/17</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-nav">
+        <div class="project-nav-content">
+          <div class="project-nav-tabs">
+            <a href="11_project_home.html" class="project-nav-tab">概要</a>
+            <a
+              href="12_project_folder_list.html"
+              class="project-nav-tab active"
+            >
+              フォルダ構成 <span class="badge badge-light">8</span>
+            </a>
+            <a href="13_project_document_check.html" class="project-nav-tab">
+              書類一覧 <span class="badge badge-light">24</span>
+            </a>
+            <a href="15_project_issues_extraction.html" class="project-nav-tab">
+              指摘事項 <span class="badge badge-danger">3</span>
+            </a>
+            <a href="14_project_upload.html" class="project-nav-tab"
+              >書類アップロード</a
+            >
+            <a href="16_project_access_permissions.html" class="project-nav-tab"
+              >アクセス権限</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="project-content p-0">
+        <div class="d-flex" style="min-height: 600px">
+          <!-- フォルダツリーサイドバー -->
+          <div class="folder-tree-sidebar">
+            <div class="folder-tree-heading">
+              <div>フォルダ</div>
+              <div>
+                <button
+                  class="btn btn-sm btn-outline p-1"
+                  title="新規フォルダ作成"
+                >
+                  <i class="fas fa-folder-plus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="folder-tree">
+              <ul>
+                <li>
+                  <div class="folder-tree-item active">
+                    <div class="folder-tree-expand">
+                      <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="folder-tree-content">
+                      <i class="fas fa-folder folder-tree-icon"></i>
+                      <span>すべてのファイル</span>
+                      <span class="folder-tree-badge ml-auto">24</span>
+                    </div>
+                  </div>
+                  <ul>
+                    <li>
+                      <div class="folder-tree-item">
+                        <div class="folder-tree-expand">
+                          <i class="fas fa-chevron-right"></i>
+                        </div>
+                        <div class="folder-tree-content">
+                          <i class="fas fa-folder folder-tree-icon"></i>
+                          <span>契約書類</span>
+                          <span class="folder-tree-badge ml-auto">8</span>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="folder-tree-item">
+                        <div class="folder-tree-expand">
+                          <i class="fas fa-chevron-right"></i>
+                        </div>
+                        <div class="folder-tree-content">
+                          <i class="fas fa-folder folder-tree-icon"></i>
+                          <span>申請書類</span>
+                          <span class="folder-tree-badge ml-auto">5</span>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="folder-tree-item">
+                        <div class="folder-tree-expand">
+                          <i class="fas fa-chevron-right"></i>
+                        </div>
+                        <div class="folder-tree-content">
+                          <i class="fas fa-folder folder-tree-icon"></i>
+                          <span>設計図面</span>
+                          <span class="folder-tree-badge ml-auto">6</span>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="folder-tree-item">
+                        <div class="folder-tree-expand">
+                          <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="folder-tree-content">
+                          <i class="fas fa-folder folder-tree-icon"></i>
+                          <span>写真</span>
+                          <span class="folder-tree-badge ml-auto">4</span>
+                        </div>
+                      </div>
+                      <ul>
+                        <li>
+                          <div class="folder-tree-item">
+                            <div
+                              class="folder-tree-expand"
+                              style="visibility: hidden"
+                            >
+                              <i class="fas fa-chevron-right"></i>
+                            </div>
+                            <div class="folder-tree-content">
+                              <i class="fas fa-folder folder-tree-icon"></i>
+                              <span>外観</span>
+                              <span class="folder-tree-badge ml-auto">2</span>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="folder-tree-item">
+                            <div
+                              class="folder-tree-expand"
+                              style="visibility: hidden"
+                            >
+                              <i class="fas fa-chevron-right"></i>
+                            </div>
+                            <div class="folder-tree-content">
+                              <i class="fas fa-folder folder-tree-icon"></i>
+                              <span>内装</span>
+                              <span class="folder-tree-badge ml-auto">2</span>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </li>
+                    <li>
+                      <div class="folder-tree-item">
+                        <div
+                          class="folder-tree-expand"
+                          style="visibility: hidden"
+                        >
+                          <i class="fas fa-chevron-right"></i>
+                        </div>
+                        <div class="folder-tree-content">
+                          <i class="fas fa-folder folder-tree-icon"></i>
+                          <span>その他</span>
+                          <span class="folder-tree-badge ml-auto">1</span>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- フォルダコンテンツ -->
+          <div class="folder-contents">
+            <div class="breadcrumb">
+              <div class="breadcrumb-item">
+                <i class="fas fa-home"></i>
+              </div>
+              <div class="breadcrumb-separator">/</div>
+              <div class="breadcrumb-item">グリーンハイツ渋谷</div>
+            </div>
+
+            <div class="folder-toolbar">
+              <div class="folder-toolbar-actions">
+                <button class="btn btn-primary">
+                  <i class="fas fa-upload mr-1"></i> アップロード
+                </button>
+                <button class="btn btn-outline">
+                  <i class="fas fa-folder-plus mr-1"></i> 新規フォルダ
+                </button>
+              </div>
+              <div class="view-toggle">
+                <div class="view-toggle-option active">
+                  <i class="fas fa-th"></i>
+                </div>
+                <div class="view-toggle-option">
+                  <i class="fas fa-list"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="folder-grid">
+              <!-- 契約書類フォルダ -->
+              <div class="folder-card">
+                <div class="folder-card-header">
+                  <div class="folder-name">
+                    <i class="fas fa-folder folder-icon"></i>
+                    <span>契約書類</span>
+                  </div>
+                  <div class="folder-menu">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </div>
+                </div>
+                <div class="folder-card-body">
+                  <div class="folder-meta">
+                    <div>8ファイル</div>
+                    <div>最終更新: 2025/04/10</div>
+                  </div>
+                  <div class="recent-files">
+                    <div class="recent-file">
+                      <div class="file-type-icon pdf-icon">
+                        <i class="fas fa-file-pdf"></i>
+                      </div>
+                      <div class="text-truncate">重要事項説明書.pdf</div>
+                    </div>
+                    <div class="recent-file">
+                      <div class="file-type-icon pdf-icon">
+                        <i class="fas fa-file-pdf"></i>
+                      </div>
+                      <div class="text-truncate">売買契約書.pdf</div>
+                    </div>
+                    <div class="recent-file">
+                      <div class="file-type-icon doc-icon">
+                        <i class="fas fa-file-word"></i>
+                      </div>
+                      <div class="text-truncate">覚書.docx</div>
+                    </div>
+                  </div>
+                  <div class="folder-actions">
+                    <button class="btn btn-sm btn-outline">
+                      <i class="fas fa-folder-open mr-1"></i> 開く
+                    </button>
+                    <button class="btn btn-sm btn-outline">
+                      <i class="fas fa-upload mr-1"></i> アップロード
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 申請書類フォルダ -->
+              <div class="folder-card">
+                <div class="folder-card-header">
+                  <div class="folder-name">
+                    <i class="fas fa-folder folder-icon"></i>
+                    <span>申請書類</span>
+                  </div>
+                  <div class="folder-menu">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </div>
+                </div>
+                <div class="folder-card-body">
+                  <div class="folder-meta">
+                    <div>5ファイル</div>
+                    <div>最終更新: 2025/04/05</div>
+                  </div>
+                  <div class="recent-files">
+                    <div class="recent-file">
+                      <div class="file-type-icon pdf-icon">
+                        <i class="fas fa-file-pdf"></i>
+                      </div>
+                      <div class="text-truncate">建築確認申請書.pdf</div>
+                    </div>
+                    <div class="recent-file">
+                      <div class="file-type-icon pdf-icon">
+                        <i class="fas fa-file-pdf"></i>
+                      </div>
+                      <div class="text-truncate">確認済証.pdf</div>
+                    </div>
+                    <div class="recent-file">
+                      <div class="file-type-icon pdf-icon">
+                        <i class="fas fa-file-pdf"></i>
+                      </div>
+                      <div class="text-truncate">各種届出書.pdf</div>
+                    </div>
+                  </div>
+                  <div class="folder-actions">
+                    <button class="btn btn-sm btn-outline">
+                      <i class="fas fa-folder-open mr-1"></i> 開く
+                    </button>
+                    <button class="btn btn-sm btn-outline">
+                      <i class="fas fa-upload mr-1"></i> アップロード
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 設計図面フォルダ -->
+              <div class="folder-card">
+                <div class="folder-card-header">
+                  <div class="folder-name">
+                    <i class="fas fa-folder folder-icon"></i>
+                    <span>設計図面</span>
+                  </div>
+                  <div class="folder-menu">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </div>
+                </div>
+                <div class="folder-card-body">
+                  <div class="folder-meta">
+                    <div>6ファイル</div>
+                    <div>最終更新: 2025/04/07</div>
+                  </div>
+                  <div class="recent-files">
+                    <div class="recent-file">
+                      <div class="file-type-icon pdf-icon">
+                        <i class="fas fa-file-pdf"></i>
+                      </div>
+                      <div class="text-truncate">配置図.pdf</div>
+                    </div>
+                    <div class="recent-file">
+                      <div class="file-type-icon pdf-icon">
+                        <i class="fas fa-file-pdf"></i>
+                      </div>
+                      <div class="text-truncate">平面図.pdf</div>
+                    </div>
+                    <div class="recent-file">
+                      <div class="file-type-icon pdf-icon">
+                        <i class="fas fa-file-pdf"></i>
+                      </div>
+                      <div class="text-truncate">立面図.pdf</div>
+                    </div>
+                  </div>
+                  <div class="folder-actions">
+                    <button class="btn btn-sm btn-outline">
+                      <i class="fas fa-folder-open mr-1"></i> 開く
+                    </button>
+                    <button class="btn btn-sm btn-outline">
+                      <i class="fas fa-upload mr-1"></i> アップロード
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 写真フォルダ -->
+              <div class="folder-card">
+                <div class="folder-card-header">
+                  <div class="folder-name">
+                    <i class="fas fa-folder folder-icon"></i>
+                    <span>写真</span>
+                  </div>
+                  <div class="folder-menu">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </div>
+                </div>
+                <div class="folder-card-body">
+                  <div class="folder-meta">
+                    <div>4ファイル</div>
+                    <div>最終更新: 2025/03/25</div>
+                  </div>
+                  <div class="recent-files">
+                    <div class="recent-file">
+                      <div class="file-type-icon img-icon">
+                        <i class="fas fa-file-image"></i>
+                      </div>
+                      <div class="text-truncate">外観写真.jpg</div>
+                    </div>
+                    <div class="recent-file">
+                      <div class="file-type-icon img-icon">
+                        <i class="fas fa-file-image"></i>
+                      </div>
+                      <div class="text-truncate">リビング写真.jpg</div>
+                    </div>
+                    <div class="recent-file">
+                      <div class="file-type-icon img-icon">
+                        <i class="fas fa-file-image"></i>
+                      </div>
+                      <div class="text-truncate">バルコニー写真.jpg</div>
+                    </div>
+                  </div>
+                  <div class="folder-actions">
+                    <button class="btn btn-sm btn-outline">
+                      <i class="fas fa-folder-open mr-1"></i> 開く
+                    </button>
+                    <button class="btn btn-sm btn-outline">
+                      <i class="fas fa-upload mr-1"></i> アップロード
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 外観フォルダ -->
+              <div class="folder-card">
+                <div class="folder-card-header">
+                  <div class="folder-name">
+                    <i class="fas fa-folder folder-icon"></i>
+                    <span>外観</span>
+                  </div>
+                  <div class="folder-menu">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </div>
+                </div>
+                <div class="folder-card-body">
+                  <div class="folder-meta">
+                    <div>2ファイル</div>
+                    <div>最終更新: 2025/03/20</div>
+                  </div>
+                  <div class="recent-files">
+                    <div class="recent-file">
+                      <div class="file-type-icon img-icon">
+                        <i class="fas fa-file-image"></i>
+                      </div>
+                      <div class="text-truncate">外観写真1.jpg</div>
+                    </div>
+                    <div class="recent-file">
+                      <div class="file-type-icon img-icon">
+                        <i class="fas fa-file-image"></i>
+                      </div>
+                      <div class="text-truncate">外観写真2.jpg</div>
+                    </div>
+                  </div>
+                  <div class="folder-actions">
+                    <button class="btn btn-sm btn-outline">
+                      <i class="fas fa-folder-open mr-1"></i> 開く
+                    </button>
+                    <button class="btn btn-sm btn-outline">
+                      <i class="fas fa-upload mr-1"></i> アップロード
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 内装フォルダ -->
+              <div class="folder-card">
+                <div class="folder-card-header">
+                  <div class="folder-name">
+                    <i class="fas fa-folder folder-icon"></i>
+                    <span>内装</span>
+                  </div>
+                  <div class="folder-menu">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </div>
+                </div>
+                <div class="folder-card-body">
+                  <div class="folder-meta">
+                    <div>2ファイル</div>
+                    <div>最終更新: 2025/03/20</div>
+                  </div>
+                  <div class="recent-files">
+                    <div class="recent-file">
+                      <div class="file-type-icon img-icon">
+                        <i class="fas fa-file-image"></i>
+                      </div>
+                      <div class="text-truncate">内装写真1.jpg</div>
+                    </div>
+                    <div class="recent-file">
+                      <div class="file-type-icon img-icon">
+                        <i class="fas fa-file-image"></i>
+                      </div>
+                      <div class="text-truncate">内装写真2.jpg</div>
+                    </div>
+                  </div>
+                  <div class="folder-actions">
+                    <button class="btn btn-sm btn-outline">
+                      <i class="fas fa-folder-open mr-1"></i> 開く
+                    </button>
+                    <button class="btn btn-sm btn-outline">
+                      <i class="fas fa-upload mr-1"></i> アップロード
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- その他フォルダ -->
+              <div class="folder-card">
+                <div class="folder-card-header">
+                  <div class="folder-name">
+                    <i class="fas fa-folder folder-icon"></i>
+                    <span>その他</span>
+                  </div>
+                  <div class="folder-menu">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </div>
+                </div>
+                <div class="folder-card-body">
+                  <div class="folder-meta">
+                    <div>1ファイル</div>
+                    <div>最終更新: 2025/03/15</div>
+                  </div>
+                  <div class="recent-files">
+                    <div class="recent-file">
+                      <div class="file-type-icon xls-icon">
+                        <i class="fas fa-file-excel"></i>
+                      </div>
+                      <div class="text-truncate">経費精算表.xlsx</div>
+                    </div>
+                  </div>
+                  <div class="folder-actions">
+                    <button class="btn btn-sm btn-outline">
+                      <i class="fas fa-folder-open mr-1"></i> 開く
+                    </button>
+                    <button class="btn btn-sm btn-outline">
+                      <i class="fas fa-upload mr-1"></i> アップロード
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 新規フォルダ作成カード -->
+              <div
+                class="folder-card"
+                style="border-style: dashed; background-color: var(--gray-50)"
+              >
+                <div class="empty-state">
+                  <div class="empty-state-icon">
+                    <i class="fas fa-folder-plus"></i>
+                  </div>
+                  <div class="empty-state-title">新規フォルダを作成</div>
+                  <div class="empty-state-description">
+                    クリックして新しいフォルダを作成します
+                  </div>
+                  <button class="btn btn-primary">
+                    <i class="fas fa-folder-plus mr-1"></i> 新規フォルダ
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // サイドバーの表示・非表示の切り替え
+      document.addEventListener("DOMContentLoaded", function () {
+        const toggleSidebarBtn = document.getElementById("toggleSidebar");
+        const sidebar = document.getElementById("sidebar");
+        const mainContent = document.getElementById("mainContent");
+
+        // サイドバーが非表示のデフォルト状態でメインコンテンツを最大幅に設定
+        mainContent.style.width = "100%";
+        mainContent.style.maxWidth = "100%";
+
+        toggleSidebarBtn.addEventListener("click", function () {
+          sidebar.classList.toggle("show");
+          if (sidebar.classList.contains("show")) {
+            mainContent.classList.add("sidebar-open");
+            mainContent.style.width = "calc(100% - 250px)";
+            mainContent.style.maxWidth = "calc(100% - 250px)";
+          } else {
+            mainContent.classList.remove("sidebar-open");
+            mainContent.style.width = "100%";
+            mainContent.style.maxWidth = "100%";
+          }
+        });
+
+        // アカウントメニューの表示・非表示
+        const userMenuToggle = document.getElementById("userMenuToggle");
+        const accountMenu = document.getElementById("accountMenu");
+
+        userMenuToggle.addEventListener("click", function (e) {
+          e.stopPropagation();
+          accountMenu.classList.toggle("show");
+        });
+
+        // 画面のどこかをクリックしたらメニューを閉じる
+        document.addEventListener("click", function () {
+          accountMenu.classList.remove("show");
+        });
+
+        // メニュー内のクリックはイベント伝播を止める
+        accountMenu.addEventListener("click", function (e) {
+          e.stopPropagation();
+        });
+      });
+
+      // ツリービューの展開・折りたたみ
+      document.querySelectorAll(".folder-tree-expand").forEach((item) => {
+        item.addEventListener("click", (event) => {
+          event.stopPropagation();
+          const icon = item.querySelector("i");
+          const isExpanded = icon.classList.contains("fa-chevron-down");
+
+          if (isExpanded) {
+            icon.classList.replace("fa-chevron-down", "fa-chevron-right");
+            const parentLi = item.closest("li");
+            const subUl = parentLi.querySelector("ul");
+            if (subUl) {
+              subUl.style.display = "none";
+            }
+          } else {
+            icon.classList.replace("fa-chevron-right", "fa-chevron-down");
+            const parentLi = item.closest("li");
+            const subUl = parentLi.querySelector("ul");
+            if (subUl) {
+              subUl.style.display = "block";
+            }
+          }
+        });
+      });
+
+      // フォルダーツリーアイテムの選択
+      document.querySelectorAll(".folder-tree-item").forEach((item) => {
+        item.addEventListener("click", (event) => {
+          document.querySelectorAll(".folder-tree-item").forEach((i) => {
+            i.classList.remove("active");
+          });
+          item.classList.add("active");
+        });
+      });
+
+      // ビュー切り替え
+      document.querySelectorAll(".view-toggle-option").forEach((option) => {
+        option.addEventListener("click", () => {
+          document.querySelectorAll(".view-toggle-option").forEach((opt) => {
+            opt.classList.remove("active");
+          });
+          option.classList.add("active");
+
+          // 実際のビュー切り替えコードはここに追加
+        });
+      });
+    </script>
+  </body>
+</html>

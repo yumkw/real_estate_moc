@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>プロジェクト一覧 - 不動産プロジェクト書類管理</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/pages.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
+    <style>
+      :root {
+        --sidebar-bg: #2d3436;
+        --sidebar-text: #f5f5f5;
+        --sidebar-hover: #34495e;
+        --topbar-bg: #2d3436;
+        --topbar-text: #f5f5f5;
+        --icon-color: #f5f5f5;
+        --dropdown-bg: #ffffff;
+        --dropdown-text: #333333;
+        --dropdown-hover: #f8f9fa;
+      }
+
+      body {
+        padding: 0;
+        margin: 0;
+        overflow-x: hidden;
+      }
+
+      /* サイドバーの表示・非表示の切り替え用スタイル */
+      .sidebar {
+        position: fixed;
+        left: -250px;
+        top: 60px;
+        height: calc(100vh - 60px);
+        width: 250px;
+        background-color: var(--sidebar-bg);
+        color: var(--sidebar-text);
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        transition: left 0.3s ease;
+        z-index: 1000;
+        overflow-y: auto;
+        padding-bottom: 20px;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+      }
+
+      .sidebar.show {
+        left: 0;
+      }
+
+      .main-content {
+        padding-top: 80px;
+        padding-left: 20px;
+        padding-right: 20px;
+        transition: all 0.3s ease;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        margin-left: 0;
+      }
+
+      .main-content.sidebar-open {
+        margin-left: 250px;
+        width: calc(100% - 250px);
+        max-width: calc(100% - 250px);
+      }
+
+      /* トップバー */
+      .top-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background-color: var(--topbar-bg);
+        color: var(--topbar-text);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        z-index: 1000;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .toggle-sidebar {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0;
+        margin-right: 20px;
+        color: var(--icon-color);
+      }
+
+      .top-bar-brand {
+        font-weight: bold;
+        font-size: 18px;
+        margin-right: auto;
+        color: var(--topbar-text);
+      }
+
+      .top-bar-actions {
+        display: flex;
+        align-items: center;
+      }
+
+      .top-bar-notification {
+        position: relative;
+        margin-right: 20px;
+      }
+
+      .top-bar-notification a {
+        color: var(--icon-color);
+      }
+
+      .notification-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: var(--danger);
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .top-bar-user {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        position: relative;
+        color: var(--topbar-text);
+      }
+
+      .user-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.2);
+        color: var(--icon-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+      }
+
+      .user-name {
+        margin-right: 5px;
+      }
+
+      /* アカウントメニュードロップダウン */
+      .account-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 200px;
+        background-color: var(--dropdown-bg);
+        color: var(--dropdown-text);
+        border: 1px solid var(--gray-200);
+        border-radius: 4px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        display: none;
+        z-index: 1001;
+        margin-top: 5px;
+        overflow: hidden;
+      }
+
+      .account-menu.show {
+        display: block;
+      }
+
+      .account-menu-item {
+        padding: 12px 15px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .account-menu-item:hover {
+        background-color: var(--dropdown-hover);
+      }
+
+      .account-menu-item i {
+        margin-right: 10px;
+        width: 16px;
+        text-align: center;
+        color: var(--primary);
+      }
+
+      /* 検索フォーム */
+      .sidebar-search-form {
+        padding: 15px;
+      }
+
+      .sidebar-search-form h4 {
+        color: var(--sidebar-text);
+        margin-bottom: 20px;
+        font-size: 16px;
+      }
+
+      .search-form-group {
+        margin-bottom: 15px;
+      }
+
+      .search-form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-size: var(--fs-sm);
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .search-form-group input,
+      .search-form-group select {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 4px;
+        font-size: var(--fs-sm);
+        background-color: rgba(255, 255, 255, 0.1);
+        color: var(--sidebar-text);
+      }
+
+      .search-form-group input::placeholder,
+      .search-form-group select::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      .search-form-group select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 9L0 0h12'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        padding-right: 30px;
+      }
+
+      .unit-label {
+        font-size: var(--fs-sm);
+        color: rgba(255, 255, 255, 0.8);
+        margin-left: 5px;
+      }
+
+      .sidebar-search-form .btn-primary {
+        background-color: var(--primary);
+        border: none;
+        color: white;
+        padding: 10px 15px;
+        transition: background-color 0.2s;
+      }
+
+      .sidebar-search-form .btn-primary:hover {
+        background-color: var(--primary-dark);
+      }
+
+      /* メインコンテンツの幅調整のためのメディアクエリ */
+      @media (min-width: 1200px) {
+        .main-content {
+          padding-left: 40px;
+          padding-right: 40px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- トップバー -->
+    <div class="top-bar">
+      <button class="toggle-sidebar" id="toggleSidebar">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="top-bar-brand">不動産プロジェクト書類管理</div>
+      <div class="top-bar-actions">
+        <div class="top-bar-notification">
+          <a href="06_User_notification.html" class="btn-icon">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">3</span>
+          </a>
+        </div>
+        <div class="top-bar-user" id="userMenuToggle">
+          <div class="user-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <span class="user-name">鈴木太郎</span>
+          <i class="fas fa-chevron-down"></i>
+
+          <!-- アカウントメニュードロップダウン -->
+          <div class="account-menu" id="accountMenu">
+            <div class="account-menu-item">
+              <i class="fas fa-question-circle"></i>
+              <span>問い合わせ</span>
+            </div>
+            <div class="account-menu-item">
+              <i class="fas fa-cog"></i>
+              <span>設定</span>
+            </div>
+            <!-- 管理者ユーザーの場合のみ表示 -->
+            <div class="account-menu-item admin-only">
+              <i class="fas fa-users-cog"></i>
+              <span>管理者メニュー</span>
+            </div>
+            <hr style="margin: 5px 0; border-top: 1px solid var(--gray-200)" />
+            <div class="account-menu-item">
+              <i class="fas fa-sign-out-alt"></i>
+              <span>ログアウト</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- サイドバー -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-sticky">
+        <div class="sidebar-search-form">
+          <h4>プロジェクト検索</h4>
+
+          <div class="search-form-group">
+            <label for="projectName">物件名</label>
+            <input type="text" id="projectName" placeholder="物件名を入力" />
+          </div>
+
+          <div class="search-form-group">
+            <label for="seller">売主</label>
+            <input type="text" id="seller" placeholder="売主名を入力" />
+          </div>
+
+          <div class="search-form-group">
+            <label for="manager">責任者・担当者</label>
+            <input type="text" id="manager" placeholder="担当者名を入力" />
+          </div>
+
+          <div class="search-form-group">
+            <label for="prefecture">住所（都道府県）</label>
+            <select id="prefecture">
+              <option value="">選択してください</option>
+              <option value="北海道">北海道</option>
+              <option value="青森県">青森県</option>
+              <option value="岩手県">岩手県</option>
+              <option value="宮城県">宮城県</option>
+              <option value="秋田県">秋田県</option>
+              <option value="山形県">山形県</option>
+              <option value="福島県">福島県</option>
+              <option value="茨城県">茨城県</option>
+              <option value="栃木県">栃木県</option>
+              <option value="群馬県">群馬県</option>
+              <option value="埼玉県">埼玉県</option>
+              <option value="千葉県">千葉県</option>
+              <option value="東京都">東京都</option>
+              <option value="神奈川県">神奈川県</option>
+              <option value="新潟県">新潟県</option>
+              <option value="富山県">富山県</option>
+              <option value="石川県">石川県</option>
+              <option value="福井県">福井県</option>
+              <option value="山梨県">山梨県</option>
+              <option value="長野県">長野県</option>
+              <option value="岐阜県">岐阜県</option>
+              <option value="静岡県">静岡県</option>
+              <option value="愛知県">愛知県</option>
+              <option value="三重県">三重県</option>
+              <option value="滋賀県">滋賀県</option>
+              <option value="京都府">京都府</option>
+              <option value="大阪府">大阪府</option>
+              <option value="兵庫県">兵庫県</option>
+              <option value="奈良県">奈良県</option>
+              <option value="和歌山県">和歌山県</option>
+              <option value="鳥取県">鳥取県</option>
+              <option value="島根県">島根県</option>
+              <option value="岡山県">岡山県</option>
+              <option value="広島県">広島県</option>
+              <option value="山口県">山口県</option>
+              <option value="徳島県">徳島県</option>
+              <option value="香川県">香川県</option>
+              <option value="愛媛県">愛媛県</option>
+              <option value="高知県">高知県</option>
+              <option value="福岡県">福岡県</option>
+              <option value="佐賀県">佐賀県</option>
+              <option value="長崎県">長崎県</option>
+              <option value="熊本県">熊本県</option>
+              <option value="大分県">大分県</option>
+              <option value="宮崎県">宮崎県</option>
+              <option value="鹿児島県">鹿児島県</option>
+              <option value="沖縄県">沖縄県</option>
+            </select>
+          </div>
+
+          <div class="search-form-group">
+            <label for="address">市区町村以下</label>
+            <input type="text" id="address" placeholder="市区町村以下を入力" />
+          </div>
+
+          <div class="search-form-group">
+            <label for="area">面積</label>
+            <div style="display: flex; align-items: center">
+              <input
+                type="number"
+                id="areaFrom"
+                placeholder="最小"
+                style="width: 40%"
+              />
+              <span style="margin: 0 5px; color: rgba(255, 255, 255, 0.8)"
+                >～</span
+              >
+              <input
+                type="number"
+                id="areaTo"
+                placeholder="最大"
+                style="width: 40%"
+              />
+              <span class="unit-label">m²</span>
+            </div>
+          </div>
+
+          <div class="search-form-group">
+            <label for="yearBuilt">築年数</label>
+            <div style="display: flex; align-items: center">
+              <input
+                type="number"
+                id="yearFrom"
+                placeholder="最小"
+                style="width: 40%"
+              />
+              <span style="margin: 0 5px; color: rgba(255, 255, 255, 0.8)"
+                >～</span
+              >
+              <input
+                type="number"
+                id="yearTo"
+                placeholder="最大"
+                style="width: 40%"
+              />
+              <span class="unit-label">年</span>
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-block" style="margin-top: 15px">
+            <i class="fas fa-search mr-2"></i>検索
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <div class="main-content" id="mainContent">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>プロジェクト一覧</h1>
+
+        <div class="d-flex">
+          <div class="search-box mr-3">
+            <i class="fas fa-search search-icon"></i>
+            <input
+              type="text"
+              placeholder="プロジェクト検索..."
+              class="rounded"
+            />
+          </div>
+          <button class="btn btn-primary">
+            <i class="fas fa-plus mr-1"></i> 新規プロジェクト
+          </button>
+        </div>
+      </div>
+
+      <div class="search-filters">
+        <div class="filter-badge">
+          所在地: 東京都 <span class="remove">×</span>
+        </div>
+        <div class="filter-badge">
+          担当者: 鈴木太郎 <span class="remove">×</span>
+        </div>
+        <div class="filter-badge">
+          ステータス: 進行中 <span class="remove">×</span>
+        </div>
+
+        <div class="view-toggle ml-auto">
+          <button
+            class="btn btn-sm btn-outline view-toggle-btn active"
+            data-view="tile"
+          >
+            <i class="fas fa-th-large"></i> タイル
+          </button>
+          <button
+            class="btn btn-sm btn-outline view-toggle-btn"
+            data-view="list"
+          >
+            <i class="fas fa-list"></i> 一覧
+          </button>
+        </div>
+      </div>
+
+      <div class="tab-menu mb-4">
+        <div class="tab-item active">すべて</div>
+        <div class="tab-item">自分のプロジェクト</div>
+        <div class="tab-item">共有されたプロジェクト</div>
+        <div class="tab-item">アーカイブ</div>
+      </div>
+
+      <div class="projects-container view-mode-tile">
+        <!-- タイル表示用コンテナ -->
+        <div class="project-grid">
+          <!-- 新規プロジェクト作成カード -->
+          <div class="create-project-card">
+            <i class="fas fa-plus-circle"></i>
+            <p>新規プロジェクト作成</p>
+          </div>
+
+          <!-- プロジェクトカード -->
+          <div class="card project-card">
+            <div class="card-header">
+              <h3 style="font-size: var(--fs-lg)">グリーンハイツ渋谷</h3>
+              <span class="badge badge-success">進行中</span>
+            </div>
+            <div class="card-body">
+              <div class="mb-3">
+                <div class="d-flex align-items-center mb-2">
+                  <i class="fas fa-map-marker-alt mr-2 text-muted"></i>
+                  <span>東京都渋谷区神南1-2-3</span>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                  <i class="fas fa-user mr-2 text-muted"></i>
+                  <span>担当: 鈴木太郎</span>
+                </div>
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-calendar mr-2 text-muted"></i>
+                  <span>更新日: 2025/04/10</span>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <span class="tag project-tag">マンション</span>
+                <span class="tag project-tag">売買</span>
+                <span class="tag project-tag">リノベーション</span>
+              </div>
+
+              <div class="project-status">
+                <div class="project-status-bar">
+                  <div class="project-status-progress" style="width: 65%"></div>
+                </div>
+                <div class="project-status-text">65%</div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted" style="font-size: var(--fs-sm)"
+                  >書類数: 24</span
+                >
+                <a href="11_project_home.html" class="btn btn-sm btn-outline"
+                  >詳細を見る</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- プロジェクトカード -->
+          <div class="card project-card">
+            <div class="card-header">
+              <h3 style="font-size: var(--fs-lg)">パークレジデンス六本木</h3>
+              <span class="badge badge-info">準備中</span>
+            </div>
+            <div class="card-body">
+              <div class="mb-3">
+                <div class="d-flex align-items-center mb-2">
+                  <i class="fas fa-map-marker-alt mr-2 text-muted"></i>
+                  <span>東京都港区六本木6-1-20</span>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                  <i class="fas fa-user mr-2 text-muted"></i>
+                  <span>担当: 田中花子</span>
+                </div>
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-calendar mr-2 text-muted"></i>
+                  <span>更新日: 2025/04/08</span>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <span class="tag project-tag">高級マンション</span>
+                <span class="tag project-tag">賃貸</span>
+              </div>
+
+              <div class="project-status">
+                <div class="project-status-bar">
+                  <div class="project-status-progress" style="width: 25%"></div>
+                </div>
+                <div class="project-status-text">25%</div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted" style="font-size: var(--fs-sm)"
+                  >書類数: 12</span
+                >
+                <a href="#" class="btn btn-sm btn-outline">詳細を見る</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- プロジェクトカード -->
+          <div class="card project-card">
+            <div class="card-header">
+              <h3 style="font-size: var(--fs-lg)">サンライズガーデン横浜</h3>
+              <span class="badge badge-warning">書類不足</span>
+            </div>
+            <div class="card-body">
+              <div class="mb-3">
+                <div class="d-flex align-items-center mb-2">
+                  <i class="fas fa-map-marker-alt mr-2 text-muted"></i>
+                  <span>神奈川県横浜市西区みなとみらい3-5-1</span>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                  <i class="fas fa-user mr-2 text-muted"></i>
+                  <span>担当: 山田健太</span>
+                </div>
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-calendar mr-2 text-muted"></i>
+                  <span>更新日: 2025/04/05</span>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <span class="tag project-tag">戸建て</span>
+                <span class="tag project-tag">売買</span>
+                <span class="tag project-tag">新築</span>
+              </div>
+
+              <div class="project-status">
+                <div class="project-status-bar">
+                  <div class="project-status-progress" style="width: 45%"></div>
+                </div>
+                <div class="project-status-text">45%</div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted" style="font-size: var(--fs-sm)"
+                  >書類数: 18</span
+                >
+                <a href="#" class="btn btn-sm btn-outline">詳細を見る</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- プロジェクトカード -->
+          <div class="card project-card">
+            <div class="card-header">
+              <h3 style="font-size: var(--fs-lg)">セントラルタワー大阪</h3>
+              <span class="badge badge-secondary">完了</span>
+            </div>
+            <div class="card-body">
+              <div class="mb-3">
+                <div class="d-flex align-items-center mb-2">
+                  <i class="fas fa-map-marker-alt mr-2 text-muted"></i>
+                  <span>大阪府大阪市北区梅田1-1-3</span>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                  <i class="fas fa-user mr-2 text-muted"></i>
+                  <span>担当: 佐藤真一</span>
+                </div>
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-calendar mr-2 text-muted"></i>
+                  <span>更新日: 2025/03/28</span>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <span class="tag project-tag">オフィスビル</span>
+                <span class="tag project-tag">賃貸</span>
+                <span class="tag project-tag">商業施設</span>
+              </div>
+
+              <div class="project-status">
+                <div class="project-status-bar">
+                  <div
+                    class="project-status-progress"
+                    style="width: 100%; background-color: var(--gray-500)"
+                  ></div>
+                </div>
+                <div class="project-status-text">完了</div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted" style="font-size: var(--fs-sm)"
+                  >書類数: 32</span
+                >
+                <a href="#" class="btn btn-sm btn-outline">詳細を見る</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- プロジェクトカード -->
+          <div class="card project-card">
+            <div class="card-header">
+              <h3 style="font-size: var(--fs-lg)">ガーデンヒルズ福岡</h3>
+              <span class="badge badge-danger">要対応</span>
+            </div>
+            <div class="card-body">
+              <div class="mb-3">
+                <div class="d-flex align-items-center mb-2">
+                  <i class="fas fa-map-marker-alt mr-2 text-muted"></i>
+                  <span>福岡県福岡市中央区天神2-2-2</span>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                  <i class="fas fa-user mr-2 text-muted"></i>
+                  <span>担当: 高橋直子</span>
+                </div>
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-calendar mr-2 text-muted"></i>
+                  <span>更新日: 2025/04/01</span>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <span class="tag project-tag">マンション</span>
+                <span class="tag project-tag">売買</span>
+                <span class="tag project-tag">中古</span>
+              </div>
+
+              <div class="project-status">
+                <div class="project-status-bar">
+                  <div class="project-status-progress" style="width: 70%"></div>
+                </div>
+                <div class="project-status-text">70%</div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted" style="font-size: var(--fs-sm)"
+                  >書類数: 21</span
+                >
+                <a href="#" class="btn btn-sm btn-outline">詳細を見る</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 一覧表示用コンテナ -->
+        <div class="project-list">
+          <table class="project-list-table">
+            <thead>
+              <tr>
+                <th>プロジェクト名</th>
+                <th>所在地</th>
+                <th>担当者</th>
+                <th>更新日</th>
+                <th>進捗</th>
+                <th>書類数</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="project-title-cell">
+                    <span>グリーンハイツ渋谷</span>
+                    <span class="badge badge-success">進行中</span>
+                  </div>
+                </td>
+                <td>東京都渋谷区神南1-2-3</td>
+                <td>鈴木太郎</td>
+                <td>2025/04/10</td>
+                <td>
+                  <div class="project-status">
+                    <div class="project-status-bar">
+                      <div
+                        class="project-status-progress"
+                        style="width: 65%"
+                      ></div>
+                    </div>
+                    <div class="project-status-text">65%</div>
+                  </div>
+                </td>
+                <td>24</td>
+                <td>
+                  <div class="project-actions">
+                    <a href="#" class="btn btn-sm btn-outline">詳細</a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="project-title-cell">
+                    <span>パークレジデンス六本木</span>
+                    <span class="badge badge-info">準備中</span>
+                  </div>
+                </td>
+                <td>東京都港区六本木6-1-20</td>
+                <td>田中花子</td>
+                <td>2025/04/08</td>
+                <td>
+                  <div class="project-status">
+                    <div class="project-status-bar">
+                      <div
+                        class="project-status-progress"
+                        style="width: 25%"
+                      ></div>
+                    </div>
+                    <div class="project-status-text">25%</div>
+                  </div>
+                </td>
+                <td>12</td>
+                <td>
+                  <div class="project-actions">
+                    <a href="#" class="btn btn-sm btn-outline">詳細</a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="project-title-cell">
+                    <span>サンライズガーデン横浜</span>
+                    <span class="badge badge-warning">書類不足</span>
+                  </div>
+                </td>
+                <td>神奈川県横浜市西区みなとみらい3-5-1</td>
+                <td>山田健太</td>
+                <td>2025/04/05</td>
+                <td>
+                  <div class="project-status">
+                    <div class="project-status-bar">
+                      <div
+                        class="project-status-progress"
+                        style="width: 45%"
+                      ></div>
+                    </div>
+                    <div class="project-status-text">45%</div>
+                  </div>
+                </td>
+                <td>18</td>
+                <td>
+                  <div class="project-actions">
+                    <a href="#" class="btn btn-sm btn-outline">詳細</a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="project-title-cell">
+                    <span>セントラルタワー大阪</span>
+                    <span class="badge badge-secondary">完了</span>
+                  </div>
+                </td>
+                <td>大阪府大阪市北区梅田1-1-3</td>
+                <td>佐藤真一</td>
+                <td>2025/03/28</td>
+                <td>
+                  <div class="project-status">
+                    <div class="project-status-bar">
+                      <div
+                        class="project-status-progress"
+                        style="width: 100%; background-color: var(--gray-500)"
+                      ></div>
+                    </div>
+                    <div class="project-status-text">完了</div>
+                  </div>
+                </td>
+                <td>32</td>
+                <td>
+                  <div class="project-actions">
+                    <a href="#" class="btn btn-sm btn-outline">詳細</a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="project-title-cell">
+                    <span>ガーデンヒルズ福岡</span>
+                    <span class="badge badge-danger">要対応</span>
+                  </div>
+                </td>
+                <td>福岡県福岡市中央区天神2-2-2</td>
+                <td>高橋直子</td>
+                <td>2025/04/01</td>
+                <td>
+                  <div class="project-status">
+                    <div class="project-status-bar">
+                      <div
+                        class="project-status-progress"
+                        style="width: 70%"
+                      ></div>
+                    </div>
+                    <div class="project-status-text">70%</div>
+                  </div>
+                </td>
+                <td>21</td>
+                <td>
+                  <div class="project-actions">
+                    <a href="#" class="btn btn-sm btn-outline">詳細</a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ページネーション -->
+      <div class="pagination-container">
+        <div class="pagination-info">
+          表示: <span class="pagination-results-count">1-6</span> / 全15件
+        </div>
+
+        <ul class="pagination">
+          <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+              <i class="fas fa-chevron-left"></i>
+            </a>
+          </li>
+          <li class="page-item active">
+            <a class="page-link" href="#">1</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">2</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">3</a>
+          </li>
+          <li class="page-item ellipsis">
+            <span class="page-link">...</span>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">5</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">
+              <i class="fas fa-chevron-right"></i>
+            </a>
+          </li>
+        </ul>
+
+        <div class="pagination-pages-select">
+          <span>表示件数:</span>
+          <select>
+            <option value="6">6件</option>
+            <option value="12">12件</option>
+            <option value="24">24件</option>
+            <option value="48">48件</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // サイドバーの表示・非表示の切り替え
+      document.addEventListener("DOMContentLoaded", function () {
+        const toggleSidebarBtn = document.getElementById("toggleSidebar");
+        const sidebar = document.getElementById("sidebar");
+        const mainContent = document.getElementById("mainContent");
+
+        // サイドバーが非表示のデフォルト状態でメインコンテンツを最大幅に設定
+        mainContent.style.width = "100%";
+        mainContent.style.maxWidth = "100%";
+
+        toggleSidebarBtn.addEventListener("click", function () {
+          sidebar.classList.toggle("show");
+          if (sidebar.classList.contains("show")) {
+            mainContent.classList.add("sidebar-open");
+            mainContent.style.width = "calc(100% - 250px)";
+            mainContent.style.maxWidth = "calc(100% - 250px)";
+          } else {
+            mainContent.classList.remove("sidebar-open");
+            mainContent.style.width = "100%";
+            mainContent.style.maxWidth = "100%";
+          }
+        });
+
+        // アカウントメニューの表示・非表示
+        const userMenuToggle = document.getElementById("userMenuToggle");
+        const accountMenu = document.getElementById("accountMenu");
+
+        userMenuToggle.addEventListener("click", function (e) {
+          e.stopPropagation();
+          accountMenu.classList.toggle("show");
+        });
+
+        // 画面のどこかをクリックしたらメニューを閉じる
+        document.addEventListener("click", function () {
+          accountMenu.classList.remove("show");
+        });
+
+        // メニュー内のクリックはイベント伝播を止める
+        accountMenu.addEventListener("click", function (e) {
+          e.stopPropagation();
+        });
+
+        // 表示モード切替機能
+        const viewToggleButtons = document.querySelectorAll(".view-toggle-btn");
+        const projectsContainer = document.querySelector(".projects-container");
+
+        viewToggleButtons.forEach((button) => {
+          button.addEventListener("click", function () {
+            const viewMode = this.getAttribute("data-view");
+
+            // アクティブボタンの切り替え
+            viewToggleButtons.forEach((btn) => btn.classList.remove("active"));
+            this.classList.add("active");
+
+            // 表示モードの切り替え
+            projectsContainer.className =
+              "projects-container view-mode-" + viewMode;
+
+            // ローカルストレージに表示設定を保存
+            localStorage.setItem("projectViewMode", viewMode);
+          });
+        });
+
+        // 保存された表示モードを読み込む
+        const savedViewMode = localStorage.getItem("projectViewMode");
+        if (savedViewMode) {
+          const targetButton = document.querySelector(
+            `.view-toggle-btn[data-view="${savedViewMode}"]`
+          );
+          if (targetButton) {
+            targetButton.click();
+          }
+        }
+      });
+
+      // タブ切り替え機能
+      document.addEventListener("DOMContentLoaded", function () {
+        const tabItems = document.querySelectorAll(".tab-item");
+
+        tabItems.forEach((tab) => {
+          tab.addEventListener("click", function () {
+            tabItems.forEach((item) => item.classList.remove("active"));
+            this.classList.add("active");
+
+            // タブに対応するコンテンツの切り替え処理を
+            // 実際の実装では追加することができます
+          });
+        });
+      });
+
+      // 検索フィルターの削除機能
+      document.addEventListener("DOMContentLoaded", function () {
+        const removeButtons = document.querySelectorAll(
+          ".filter-badge .remove"
+        );
+
+        removeButtons.forEach((button) => {
+          button.addEventListener("click", function () {
+            this.parentNode.remove();
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>アクセス権限 - 不動産プロジェクト書類管理</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/pages.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
+    <style>
+      :root {
+        --sidebar-bg: #2d3436;
+        --sidebar-text: #f5f5f5;
+        --sidebar-hover: #34495e;
+        --topbar-bg: #2d3436;
+        --topbar-text: #f5f5f5;
+        --icon-color: #f5f5f5;
+        --dropdown-bg: #ffffff;
+        --dropdown-text: #333333;
+        --dropdown-hover: #f8f9fa;
+      }
+
+      body {
+        padding: 0;
+        margin: 0;
+        overflow-x: hidden;
+      }
+
+      .sidebar {
+        position: fixed;
+        left: -250px;
+        top: 60px;
+        height: calc(100vh - 60px);
+        width: 250px;
+        background-color: var(--sidebar-bg);
+        color: var(--sidebar-text);
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        transition: left 0.3s ease;
+        z-index: 1000;
+        overflow-y: auto;
+        padding-bottom: 20px;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+      }
+
+      .sidebar.show {
+        left: 0;
+      }
+
+      .sidebar-sticky {
+        padding-top: 15px;
+      }
+
+      .sidebar a {
+        color: var(--sidebar-text);
+        text-decoration: none;
+      }
+
+      .sidebar .nav-item {
+        margin-bottom: 5px;
+      }
+
+      .sidebar .nav-link {
+        padding: 10px 15px;
+        display: flex;
+        align-items: center;
+        border-radius: 4px;
+        margin: 0 10px;
+        transition: background-color 0.2s;
+      }
+
+      .sidebar .nav-link:hover {
+        background-color: var(--sidebar-hover);
+      }
+
+      .sidebar .nav-link.active {
+        background-color: rgba(255, 255, 255, 0.1);
+        font-weight: 500;
+      }
+
+      .sidebar .nav-link i {
+        margin-right: 10px;
+        width: 16px;
+        text-align: center;
+      }
+
+      .sidebar-heading {
+        padding: 10px 15px;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: rgba(255, 255, 255, 0.6);
+        font-weight: 500;
+      }
+
+      .main-content {
+        padding-top: 80px;
+        padding-left: 20px;
+        padding-right: 20px;
+        transition: all 0.3s ease;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        margin-left: 0;
+      }
+
+      .main-content.sidebar-open {
+        margin-left: 250px;
+        width: calc(100% - 250px);
+        max-width: calc(100% - 250px);
+      }
+
+      .top-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background-color: var(--topbar-bg);
+        color: var(--topbar-text);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        z-index: 1000;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .toggle-sidebar {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0;
+        margin-right: 20px;
+        color: var(--icon-color);
+      }
+
+      .top-bar-brand {
+        font-weight: bold;
+        font-size: 18px;
+        margin-right: auto;
+        color: var(--topbar-text);
+      }
+
+      .top-bar-actions {
+        display: flex;
+        align-items: center;
+      }
+
+      .top-bar-notification {
+        position: relative;
+        margin-right: 20px;
+      }
+
+      .top-bar-notification a {
+        color: var(--icon-color);
+      }
+
+      .notification-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: var(--danger);
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .top-bar-user {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        position: relative;
+        color: var(--topbar-text);
+      }
+
+      .user-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.2);
+        color: var(--icon-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+      }
+
+      .user-name {
+        margin-right: 5px;
+      }
+
+      .account-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 200px;
+        background-color: var(--dropdown-bg);
+        color: var(--dropdown-text);
+        border: 1px solid var(--gray-200);
+        border-radius: 4px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        display: none;
+        z-index: 1001;
+        margin-top: 5px;
+        overflow: hidden;
+      }
+
+      .account-menu.show {
+        display: block;
+      }
+
+      .account-menu-item {
+        padding: 12px 15px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .account-menu-item:hover {
+        background-color: var(--dropdown-hover);
+      }
+
+      .account-menu-item i {
+        margin-right: 10px;
+        width: 16px;
+        text-align: center;
+        color: var(--primary);
+      }
+
+      @media (min-width: 1200px) {
+        .main-content {
+          padding-left: 40px;
+          padding-right: 40px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="top-bar">
+      <button class="toggle-sidebar" id="toggleSidebar">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="top-bar-brand">不動産プロジェクト書類管理</div>
+      <div class="top-bar-actions">
+        <div class="top-bar-notification">
+          <a href="06_User_notification.html" class="btn-icon">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">3</span>
+          </a>
+        </div>
+        <div class="top-bar-user" id="userMenuToggle">
+          <div class="user-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <span class="user-name">鈴木太郎</span>
+          <i class="fas fa-chevron-down"></i>
+
+          <div class="account-menu" id="accountMenu">
+            <div class="account-menu-item">
+              <i class="fas fa-question-circle"></i>
+              <span>問い合わせ</span>
+            </div>
+            <div class="account-menu-item">
+              <i class="fas fa-cog"></i>
+              <span>設定</span>
+            </div>
+            <div class="account-menu-item admin-only">
+              <i class="fas fa-users-cog"></i>
+              <span>管理者メニュー</span>
+            </div>
+            <hr style="margin: 5px 0; border-top: 1px solid var(--gray-200)" />
+            <div class="account-menu-item">
+              <i class="fas fa-sign-out-alt"></i>
+              <span>ログアウト</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="11_project_home.html">
+              <i class="fas fa-info-circle"></i>
+              案件概要
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="12_project_folder_list.html">
+              <i class="fas fa-folder"></i>
+              フォルダ構成
+              <span class="badge badge-light ml-auto">8</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="13_project_document_check.html">
+              <i class="fas fa-file-alt"></i>
+              書類一覧
+              <span class="badge badge-light ml-auto">24</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="15_project_issues_extraction.html">
+              <i class="fas fa-exclamation-circle"></i>
+              指摘事項
+              <span class="badge badge-danger ml-auto">3</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              href="16_project_access_permissions.html"
+            >
+              <i class="fas fa-users"></i>
+              アクセス権限
+            </a>
+          </li>
+        </ul>
+
+        <div class="sidebar-heading mt-4">他のプロジェクト</div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-building"></i>
+              パークレジデンス六本木
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-building"></i>
+              サンライズガーデン横浜
+            </a>
+          </li>
+        </ul>
+
+        <div class="sidebar-heading mt-4">設定</div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="02_User_home.html">
+              <i class="fas fa-home"></i>
+              ホーム画面に戻る
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="main-content" id="mainContent">
+      <div class="project-header">
+        <div class="project-title">
+          <h1>グリーンハイツ渋谷</h1>
+          <div>
+            <span class="badge badge-success p-2">進行中</span>
+          </div>
+        </div>
+        <div class="project-meta">
+          <div class="project-meta-item">
+            <i class="fas fa-map-marker-alt mr-1"></i>
+            <span>東京都渋谷区神南1-2-3</span>
+          </div>
+          <div class="project-meta-item">
+            <i class="fas fa-user mr-1"></i>
+            <span>担当: 鈴木太郎</span>
+          </div>
+          <div class="project-meta-item">
+            <i class="fas fa-calendar mr-1"></i>
+            <span>開始日: 2025/02/15</span>
+          </div>
+          <div class="project-meta-item">
+            <i class="fas fa-clock mr-1"></i>
+            <span>最終更新: 2025/04/17</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-nav">
+        <div class="project-nav-content">
+          <div class="project-nav-tabs">
+            <a href="11_project_home.html" class="project-nav-tab">概要</a>
+            <a href="12_project_folder_list.html" class="project-nav-tab">
+              フォルダ構成 <span class="badge badge-light">8</span>
+            </a>
+            <a href="13_project_document_check.html" class="project-nav-tab">
+              書類一覧 <span class="badge badge-light">24</span>
+            </a>
+            <a href="15_project_issues_extraction.html" class="project-nav-tab">
+              指摘事項 <span class="badge badge-danger">3</span>
+            </a>
+            <a href="14_project_upload.html" class="project-nav-tab"
+              >書類アップロード</a
+            >
+            <a
+              href="16_project_access_permissions.html"
+              class="project-nav-tab active"
+              >アクセス権限</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="project-content">
+        <div class="permissions-container">
+          <!-- ユーザー権限タブ (初期表示) -->
+          <div id="user-permissions" class="tab-content active">
+            <!-- 検索 -->
+            <div class="search-container">
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="ユーザー名で検索..."
+                />
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ユーザー追加フォーム -->
+            <div class="add-user-form">
+              <h4 class="mb-3">ユーザーの新規追加</h4>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="new-user-email">メールアドレス</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="new-user-email"
+                    placeholder="例: tanaka@example.com"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="new-user-role">役割</label>
+                  <select class="form-control" id="new-user-role">
+                    <option value="admin">管理者</option>
+                    <option value="editor">編集者</option>
+                    <option value="viewer">閲覧者</option>
+                    <option value="guest">ゲスト</option>
+                  </select>
+                </div>
+
+                <div class="form-actions align-self-end">
+                  <button type="button" class="btn btn-primary">
+                    <i class="fas fa-user-plus mr-1"></i> 招待する
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ユーザー一覧 -->
+            <div class="permission-container">
+              <div class="permission-header">
+                <div class="permission-title">プロジェクトメンバー</div>
+                <div class="permission-actions">
+                  <button class="btn btn-outline-secondary btn-sm">
+                    <i class="fas fa-download mr-1"></i> エクスポート
+                  </button>
+                </div>
+              </div>
+
+              <table class="table-permissions">
+                <thead>
+                  <tr>
+                    <th class="avatar-col"></th>
+                    <th class="name-col">ユーザー</th>
+                    <th class="role-col">役割</th>
+                    <th class="permission-col text-center">閲覧</th>
+                    <th class="permission-col text-center">編集</th>
+                    <th class="permission-col text-center">アップロード</th>
+                    <th class="permission-col text-center">削除</th>
+                    <th class="permission-col text-center">管理</th>
+                    <th class="actions-col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- ユーザー1 -->
+                  <tr>
+                    <td>
+                      <div class="user-avatar">TY</div>
+                    </td>
+                    <td>
+                      <div class="user-name">田中 康一</div>
+                      <div class="user-email">tanaka@example.com</div>
+                    </td>
+                    <td>
+                      <span class="user-role admin">管理者</span>
+                    </td>
+                    <td class="text-center">
+                      <input
+                        type="checkbox"
+                        class="permission-checkbox"
+                        checked
+                        disabled
+                      />
+                    </td>
+                    <td class="text-center">
+                      <input
+                        type="checkbox"
+                        class="permission-checkbox"
+                        checked
+                        disabled
+                      />
+                    </td>
+                    <td class="text-center">
+                      <input
+                        type="checkbox"
+                        class="permission-checkbox"
+                        checked
+                        disabled
+                      />
+                    </td>
+                    <td class="text-center">
+                      <input
+                        type="checkbox"
+                        class="permission-checkbox"
+                        checked
+                        disabled
+                      />
+                    </td>
+                    <td class="text-center">
+                      <input
+                        type="checkbox"
+                        class="permission-checkbox"
+                        checked
+                        disabled
+                      />
+                    </td>
+                    <td class="text-right">
+                      <button class="btn btn-sm btn-outline-secondary" disabled>
+                        <i class="fas fa-pencil-alt"></i>
+                      </button>
+                    </td>
+                  </tr>
+
+                  <!-- ユーザー2 -->
+                  <tr>
+                    <td>
+                      <div class="user-avatar">SY</div>
+                    </td>
+                    <td>
+                      <div class="user-name">佐藤 裕美</div>
+                      <div class="user-email">sato@example.com</div>
+                    </td>
+                    <td>
+                      <span class="user-role editor">編集者</span>
+                    </td>
+                    <td class="text-center">
+                      <input
+                        type="checkbox"
+                        class="permission-checkbox"
+                        checked
+                      />
+                    </td>
+                    <td class="text-center">
+                      <input
+                        type="checkbox"
+                        class="permission-checkbox"
+                        checked
+                      />
+                    </td>
+                    <td class="text-center">
+                      <input
+                        type="checkbox"
+                        class="permission-checkbox"
+                        checked
+                      />
+                    </td>
+                    <td class="text-center">
+                      <input type="checkbox" class="permission-checkbox" />
+                    </td>
+                    <td class="text-center">
+                      <input type="checkbox" class="permission-checkbox" />
+                    </td>
+                    <td class="text-right">
+                      <button
+                        class="btn btn-sm btn-outline-secondary"
+                        onclick="openEditModal('SY')"
+                      >
+                        <i class="fas fa-pencil-alt"></i>
+                      </button>
+                    </td>
+                  </tr>
+
+                  <!-- ユーザー3 -->
+                  <tr>
+                    <td>
+                      <div class="user-avatar">KM</div>
+                    </td>
+                    <td>
+                      <div class="user-name">木村 誠</div>
+                      <div class="user-email">kimura@example.com</div>
+                    </td>
+                    <td>
+                      <span class="user-role editor">編集者</span>
+                    </td>
+                    <td class="text-center">
+                      <input
+                        type="checkbox"
+                        class="permission-checkbox"
+                        checked
+                      />
+                    </td>
+                    <td class="text-center">
+                      <input
+                        type="checkbox"
+                        class="permission-checkbox"
+                        checked
+                      />
+                    </td>
+                    <td class="text-center">
+                      <input
+                        type="checkbox"
+                        class="permission-checkbox"
+                        checked
+                      />
+                    </td>
+                    <td class="text-center">
+                      <input type="checkbox" class="permission-checkbox" />
+                    </td>
+                    <td class="text-center">
+                      <input type="checkbox" class="permission-checkbox" />
+                    </td>
+                    <td class="text-right">
+                      <button
+                        class="btn btn-sm btn-outline-secondary"
+                        onclick="openEditModal('KM')"
+                      >
+                        <i class="fas fa-pencil-alt"></i>
+                      </button>
+                    </td>
+                  </tr>
+
+                  <!-- ユーザー4 -->
+                  <tr>
+                    <td>
+                      <div class="user-avatar">HY</div>
+                    </td>
+                    <td>
+                      <div class="user-name">林 洋子</div>
+                      <div class="user-email">hayashi@example.com</div>
+                    </td>
+                    <td>
+                      <span class="user-role viewer">閲覧者</span>
+                    </td>
+                    <td class="text-center">
+                      <input
+                        type="checkbox"
+                        class="permission-checkbox"
+                        checked
+                      />
+                    </td>
+                    <td class="text-center">
+                      <input type="checkbox" class="permission-checkbox" />
+                    </td>
+                    <td class="text-center">
+                      <input type="checkbox" class="permission-checkbox" />
+                    </td>
+                    <td class="text-center">
+                      <input type="checkbox" class="permission-checkbox" />
+                    </td>
+                    <td class="text-center">
+                      <input type="checkbox" class="permission-checkbox" />
+                    </td>
+                    <td class="text-right">
+                      <button
+                        class="btn btn-sm btn-outline-secondary"
+                        onclick="openEditModal('HY')"
+                      >
+                        <i class="fas fa-pencil-alt"></i>
+                      </button>
+                    </td>
+                  </tr>
+
+                  <!-- ユーザー5 -->
+                  <tr>
+                    <td>
+                      <div class="user-avatar">IK</div>
+                    </td>
+                    <td>
+                      <div class="user-name">井上 健太</div>
+                      <div class="user-email">inoue@example.com</div>
+                    </td>
+                    <td>
+                      <span class="user-role guest">ゲスト</span>
+                    </td>
+                    <td class="text-center">
+                      <input
+                        type="checkbox"
+                        class="permission-checkbox"
+                        checked
+                      />
+                    </td>
+                    <td class="text-center">
+                      <input type="checkbox" class="permission-checkbox" />
+                    </td>
+                    <td class="text-center">
+                      <input type="checkbox" class="permission-checkbox" />
+                    </td>
+                    <td class="text-center">
+                      <input type="checkbox" class="permission-checkbox" />
+                    </td>
+                    <td class="text-center">
+                      <input type="checkbox" class="permission-checkbox" />
+                    </td>
+                    <td class="text-right">
+                      <button
+                        class="btn btn-sm btn-outline-secondary"
+                        onclick="openEditModal('IK')"
+                      >
+                        <i class="fas fa-pencil-alt"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- 役割（ロール）説明 -->
+            <div class="permission-container">
+              <div class="permission-header">
+                <div class="permission-title">役割について</div>
+              </div>
+
+              <div class="role-descriptions">
+                <p>
+                  <strong>管理者:</strong>
+                  プロジェクトのすべての側面を管理し、ユーザー権限の設定、フォルダ構造の編集、すべてのファイルの閲覧・編集・削除が可能です。
+                </p>
+                <p>
+                  <strong>編集者:</strong>
+                  フォルダ内のファイルの閲覧・編集・アップロードが可能ですが、プロジェクト自体の設定や権限変更はできません。
+                </p>
+                <p>
+                  <strong>閲覧者:</strong>
+                  プロジェクト内のファイルの閲覧のみが可能です。ファイルの変更やアップロードはできません。
+                </p>
+                <p>
+                  <strong>ゲスト:</strong>
+                  特定の共有されたファイルのみにアクセス可能です。デフォルトでは閲覧のみの権限を持ちます。
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const toggleSidebarBtn = document.getElementById("toggleSidebar");
+        const sidebar = document.getElementById("sidebar");
+        const mainContent = document.getElementById("mainContent");
+
+        mainContent.style.width = "100%";
+        mainContent.style.maxWidth = "100%";
+
+        toggleSidebarBtn.addEventListener("click", function () {
+          sidebar.classList.toggle("show");
+          if (sidebar.classList.contains("show")) {
+            mainContent.classList.add("sidebar-open");
+            mainContent.style.width = "calc(100% - 250px)";
+            mainContent.style.maxWidth = "calc(100% - 250px)";
+          } else {
+            mainContent.classList.remove("sidebar-open");
+            mainContent.style.width = "100%";
+            mainContent.style.maxWidth = "100%";
+          }
+        });
+
+        const userMenuToggle = document.getElementById("userMenuToggle");
+        const accountMenu = document.getElementById("accountMenu");
+
+        userMenuToggle.addEventListener("click", function (e) {
+          e.stopPropagation();
+          accountMenu.classList.toggle("show");
+        });
+
+        document.addEventListener("click", function () {
+          accountMenu.classList.remove("show");
+        });
+
+        accountMenu.addEventListener("click", function (e) {
+          e.stopPropagation();
+        });
+      });
+    </script>
+  </body>
+</html>

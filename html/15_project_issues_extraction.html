@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>指摘事項 - 不動産プロジェクト書類管理</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/pages.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
+    <style>
+      :root {
+        --sidebar-bg: #2d3436;
+        --sidebar-text: #f5f5f5;
+        --sidebar-hover: #34495e;
+        --topbar-bg: #2d3436;
+        --topbar-text: #f5f5f5;
+        --icon-color: #f5f5f5;
+        --dropdown-bg: #ffffff;
+        --dropdown-text: #333333;
+        --dropdown-hover: #f8f9fa;
+      }
+
+      body {
+        padding: 0;
+        margin: 0;
+        overflow-x: hidden;
+      }
+
+      /* サイドバーの表示・非表示の切り替え用スタイル */
+      .sidebar {
+        position: fixed;
+        left: -250px;
+        top: 60px;
+        height: calc(100vh - 60px);
+        width: 250px;
+        background-color: var(--sidebar-bg);
+        color: var(--sidebar-text);
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        transition: left 0.3s ease;
+        z-index: 1000;
+        overflow-y: auto;
+        padding-bottom: 20px;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+      }
+
+      .sidebar.show {
+        left: 0;
+      }
+
+      .sidebar-sticky {
+        padding-top: 15px;
+      }
+
+      .sidebar a {
+        color: var(--sidebar-text);
+        text-decoration: none;
+      }
+
+      .sidebar .nav-item {
+        margin-bottom: 5px;
+      }
+
+      .sidebar .nav-link {
+        padding: 10px 15px;
+        display: flex;
+        align-items: center;
+        border-radius: 4px;
+        margin: 0 10px;
+        transition: background-color 0.2s;
+      }
+
+      .sidebar .nav-link:hover {
+        background-color: var(--sidebar-hover);
+      }
+
+      .sidebar .nav-link.active {
+        background-color: rgba(255, 255, 255, 0.1);
+        font-weight: 500;
+      }
+
+      .sidebar .nav-link i {
+        margin-right: 10px;
+        width: 16px;
+        text-align: center;
+      }
+
+      .sidebar-heading {
+        padding: 10px 15px;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: rgba(255, 255, 255, 0.6);
+        font-weight: 500;
+      }
+
+      .main-content {
+        padding-top: 80px;
+        padding-left: 20px;
+        padding-right: 20px;
+        transition: all 0.3s ease;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        margin-left: 0;
+      }
+
+      .main-content.sidebar-open {
+        margin-left: 250px;
+        width: calc(100% - 250px);
+        max-width: calc(100% - 250px);
+      }
+
+      /* トップバー */
+      .top-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background-color: var(--topbar-bg);
+        color: var(--topbar-text);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        z-index: 1000;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .toggle-sidebar {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0;
+        margin-right: 20px;
+        color: var(--icon-color);
+      }
+
+      .top-bar-brand {
+        font-weight: bold;
+        font-size: 18px;
+        margin-right: auto;
+        color: var(--topbar-text);
+      }
+
+      .top-bar-actions {
+        display: flex;
+        align-items: center;
+      }
+
+      .top-bar-notification {
+        position: relative;
+        margin-right: 20px;
+      }
+
+      .top-bar-notification a {
+        color: var(--icon-color);
+      }
+
+      .notification-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: var(--danger);
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .top-bar-user {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        position: relative;
+        color: var(--topbar-text);
+      }
+
+      .user-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.2);
+        color: var(--icon-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+      }
+
+      .user-name {
+        margin-right: 5px;
+      }
+
+      /* アカウントメニュードロップダウン */
+      .account-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 200px;
+        background-color: var(--dropdown-bg);
+        color: var(--dropdown-text);
+        border: 1px solid var(--gray-200);
+        border-radius: 4px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        display: none;
+        z-index: 1001;
+        margin-top: 5px;
+        overflow: hidden;
+      }
+
+      .account-menu.show {
+        display: block;
+      }
+
+      .account-menu-item {
+        padding: 12px 15px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .account-menu-item:hover {
+        background-color: var(--dropdown-hover);
+      }
+
+      .account-menu-item i {
+        margin-right: 10px;
+        width: 16px;
+        text-align: center;
+        color: var(--primary);
+      }
+
+      /* メディアクエリ */
+      @media (min-width: 1200px) {
+        .main-content {
+          padding-left: 40px;
+          padding-right: 40px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- トップバー -->
+    <div class="top-bar">
+      <button class="toggle-sidebar" id="toggleSidebar">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="top-bar-brand">不動産プロジェクト書類管理</div>
+      <div class="top-bar-actions">
+        <div class="top-bar-notification">
+          <a href="06_User_notification.html" class="btn-icon">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">3</span>
+          </a>
+        </div>
+        <div class="top-bar-user" id="userMenuToggle">
+          <div class="user-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <span class="user-name">鈴木太郎</span>
+          <i class="fas fa-chevron-down"></i>
+
+          <!-- アカウントメニュードロップダウン -->
+          <div class="account-menu" id="accountMenu">
+            <div class="account-menu-item">
+              <i class="fas fa-question-circle"></i>
+              <span>問い合わせ</span>
+            </div>
+            <div class="account-menu-item">
+              <i class="fas fa-cog"></i>
+              <span>設定</span>
+            </div>
+            <!-- 管理者ユーザーの場合のみ表示 -->
+            <div class="account-menu-item admin-only">
+              <i class="fas fa-users-cog"></i>
+              <span>管理者メニュー</span>
+            </div>
+            <hr style="margin: 5px 0; border-top: 1px solid var(--gray-200)" />
+            <div class="account-menu-item">
+              <i class="fas fa-sign-out-alt"></i>
+              <span>ログアウト</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- サイドバー -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="11_project_home.html">
+              <i class="fas fa-info-circle"></i>
+              案件概要
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="12_project_folder_list.html">
+              <i class="fas fa-folder"></i>
+              フォルダ構成
+              <span class="badge badge-light ml-auto">8</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="13_project_document_check.html">
+              <i class="fas fa-file-alt"></i>
+              書類一覧
+              <span class="badge badge-light ml-auto">24</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="15_project_issues_extraction.html">
+              <i class="fas fa-exclamation-circle"></i>
+              指摘事項
+              <span class="badge badge-danger ml-auto">3</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="16_project_access_permissions.html">
+              <i class="fas fa-users"></i>
+              アクセス権限
+            </a>
+          </li>
+        </ul>
+
+        <div class="sidebar-heading mt-4">他のプロジェクト</div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-building"></i>
+              パークレジデンス六本木
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-building"></i>
+              サンライズガーデン横浜
+            </a>
+          </li>
+        </ul>
+
+        <div class="sidebar-heading mt-4">設定</div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="02_User_home.html">
+              <i class="fas fa-home"></i>
+              ホーム画面に戻る
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <div class="main-content" id="mainContent">
+      <div class="project-header">
+        <div class="project-title">
+          <h1>グリーンハイツ渋谷</h1>
+          <div>
+            <span class="badge badge-success p-2">進行中</span>
+          </div>
+        </div>
+        <div class="project-meta">
+          <div class="project-meta-item">
+            <i class="fas fa-map-marker-alt mr-1"></i>
+            <span>東京都渋谷区神南1-2-3</span>
+          </div>
+          <div class="project-meta-item">
+            <i class="fas fa-user mr-1"></i>
+            <span>担当: 鈴木太郎</span>
+          </div>
+          <div class="project-meta-item">
+            <i class="fas fa-calendar mr-1"></i>
+            <span>開始日: 2025/02/15</span>
+          </div>
+          <div class="project-meta-item">
+            <i class="fas fa-clock mr-1"></i>
+            <span>最終更新: 2025/04/17</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-nav">
+        <div class="project-nav-content">
+          <div class="project-nav-tabs">
+            <a href="11_project_home.html" class="project-nav-tab">概要</a>
+            <a href="12_project_folder_list.html" class="project-nav-tab">
+              フォルダ構成 <span class="badge badge-light">8</span>
+            </a>
+            <a href="13_project_document_check.html" class="project-nav-tab">
+              書類一覧 <span class="badge badge-light">24</span>
+            </a>
+            <a
+              href="15_project_issues_extraction.html"
+              class="project-nav-tab active"
+            >
+              指摘事項 <span class="badge badge-danger">3</span>
+            </a>
+            <a href="14_project_upload.html" class="project-nav-tab"
+              >書類アップロード</a
+            >
+            <a href="16_project_access_permissions.html" class="project-nav-tab"
+              >アクセス権限</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="project-content">
+        <!-- 指摘事項コンテンツ -->
+        <div class="issues-container">
+          <div class="issues-header">
+            <h2>指摘事項抽出</h2>
+            <button class="btn btn-outline">
+              <i class="fas fa-sync-alt mr-1"></i> 再分析
+            </button>
+          </div>
+
+          <div class="alert alert-info mb-4">
+            <i class="fas fa-info-circle mr-2"></i>
+            AIが書類を分析し、リスク・不備・要確認事項を抽出しました。時系列で確認できます。
+          </div>
+
+          <div class="issues-summary">
+            <div class="issues-count issues-count-high">
+              <i class="fas fa-exclamation-triangle issues-count-icon"></i>
+              <div class="issues-count-value">3</div>
+              <div class="issues-count-label">高リスク事項</div>
+            </div>
+            <div class="issues-count issues-count-medium">
+              <i class="fas fa-exclamation-circle issues-count-icon"></i>
+              <div class="issues-count-value">8</div>
+              <div class="issues-count-label">要確認事項</div>
+            </div>
+            <div class="issues-count issues-count-low">
+              <i class="fas fa-info-circle issues-count-icon"></i>
+              <div class="issues-count-value">5</div>
+              <div class="issues-count-label">情報事項</div>
+            </div>
+          </div>
+
+          <div class="issues-filters">
+            <div class="filter-group">
+              <div class="filter-label">リスクレベル</div>
+              <select class="filter-select">
+                <option>すべて</option>
+                <option>高リスク</option>
+                <option>中リスク</option>
+                <option>低リスク</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <div class="filter-label">カテゴリー</div>
+              <select class="filter-select">
+                <option>すべて</option>
+                <option>構造</option>
+                <option>設備</option>
+                <option>法的問題</option>
+                <option>物件状態</option>
+                <option>その他</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <div class="filter-label">書類種別</div>
+              <select class="filter-select">
+                <option>すべて</option>
+                <option>インスペクション報告書</option>
+                <option>重要事項説明書</option>
+                <option>売買契約書</option>
+                <option>その他</option>
+              </select>
+            </div>
+
+            <div class="search-box ml-auto">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                placeholder="指摘事項を検索..."
+                class="rounded"
+              />
+            </div>
+          </div>
+
+          <div class="timeline">
+            <!-- 高リスク事項 -->
+            <div class="timeline-item">
+              <div class="timeline-date">2025/04/05</div>
+              <div class="timeline-dot"></div>
+              <div class="timeline-content high-risk">
+                <div class="issue-header">
+                  <h3 class="issue-title">雨漏りの形跡を確認</h3>
+                  <span class="issue-badge">高リスク</span>
+                </div>
+
+                <div class="issue-meta">
+                  <div class="issue-meta-item">
+                    <i class="fas fa-folder"></i> インスペクション報告書
+                  </div>
+                  <div class="issue-meta-item">
+                    <i class="fas fa-tag"></i> 物件状態
+                  </div>
+                  <div class="issue-meta-item">
+                    <i class="fas fa-calendar"></i> 2025/03/28
+                  </div>
+                </div>
+
+                <div class="issue-description">
+                  <p>
+                    物件検査時に、リビング天井の南東角に雨漏りの形跡が確認されました。天井の変色と軽微なクロスの膨れがあり、上階からの水漏れの可能性があります。早急な原因特定と修繕が必要です。
+                  </p>
+                </div>
+
+                <div class="issue-evidence">
+                  <div class="issue-evidence-title">
+                    根拠箇所（インスペクション報告書より抜粋）
+                  </div>
+                  <div class="issue-evidence-quote">
+                    「リビング天井南東角に約30cm四方の変色あり。触診により軽度の膨らみを確認。上階の水回りからの漏水の可能性が高い。（P.12参照）」
+                  </div>
+                  <div class="issue-document">
+                    <i class="far fa-file-pdf"></i>
+                    <a href="#">インスペクション報告書.pdf（P.12）</a>
+                  </div>
+                </div>
+
+                <div class="issue-actions">
+                  <button class="btn btn-sm btn-outline">
+                    <i class="fas fa-comment-alt mr-1"></i> コメント
+                  </button>
+                  <button class="btn btn-sm btn-outline">
+                    <i class="fas fa-flag mr-1"></i> フラグ
+                  </button>
+                  <button class="btn btn-sm btn-outline">
+                    <i class="fas fa-clipboard-check mr-1"></i> 対応済みにする
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-date">2025/04/03</div>
+              <div class="timeline-dot"></div>
+              <div class="timeline-content high-risk">
+                <div class="issue-header">
+                  <h3 class="issue-title">給湯器の経年劣化による交換推奨</h3>
+                  <span class="issue-badge">高リスク</span>
+                </div>
+
+                <div class="issue-meta">
+                  <div class="issue-meta-item">
+                    <i class="fas fa-folder"></i> インスペクション報告書
+                  </div>
+                  <div class="issue-meta-item">
+                    <i class="fas fa-tag"></i> 設備
+                  </div>
+                  <div class="issue-meta-item">
+                    <i class="fas fa-calendar"></i> 2025/03/28
+                  </div>
+                </div>
+
+                <div class="issue-description">
+                  <p>
+                    給湯器の製造年月が2010年6月であり、すでに使用年数が15年近く経過しています。メーカー推奨の交換時期（10年）を超えており、安全性の観点から交換を強く推奨します。現在は正常に作動していますが、突然の故障リスクがあります。
+                  </p>
+                </div>
+
+                <div class="issue-evidence">
+                  <div class="issue-evidence-title">
+                    根拠箇所（インスペクション報告書より抜粋）
+                  </div>
+                  <div class="issue-evidence-quote">
+                    「給湯器：リンナイ製、型番RUF-A2003SAW、製造年月2010年6月。稼働確認済みだが経年劣化が進んでおり交換推奨。（P.8参照）」
+                  </div>
+                  <div class="issue-document">
+                    <i class="far fa-file-pdf"></i>
+                    <a href="#">インスペクション報告書.pdf（P.8）</a>
+                  </div>
+                </div>
+
+                <div class="issue-actions">
+                  <button class="btn btn-sm btn-outline">
+                    <i class="fas fa-comment-alt mr-1"></i> コメント
+                  </button>
+                  <button class="btn btn-sm btn-outline">
+                    <i class="fas fa-flag mr-1"></i> フラグ
+                  </button>
+                  <button class="btn btn-sm btn-outline">
+                    <i class="fas fa-clipboard-check mr-1"></i> 対応済みにする
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 中リスク事項 -->
+            <div class="timeline-item">
+              <div class="timeline-date">2025/04/01</div>
+              <div class="timeline-dot"></div>
+              <div class="timeline-content medium-risk">
+                <div class="issue-header">
+                  <h3 class="issue-title">エアコン配管の断熱材劣化</h3>
+                  <span class="issue-badge">中リスク</span>
+                </div>
+
+                <div class="issue-meta">
+                  <div class="issue-meta-item">
+                    <i class="fas fa-folder"></i> インスペクション報告書
+                  </div>
+                  <div class="issue-meta-item">
+                    <i class="fas fa-tag"></i> 設備
+                  </div>
+                  <div class="issue-meta-item">
+                    <i class="fas fa-calendar"></i> 2025/03/28
+                  </div>
+                </div>
+
+                <div class="issue-description">
+                  <p>
+                    リビングのエアコン配管の外壁貫通部分で断熱材の劣化が確認されました。結露や熱損失の原因となる可能性があります。比較的簡易な修繕で対応可能です。
+                  </p>
+                </div>
+
+                <div class="issue-evidence">
+                  <div class="issue-evidence-title">
+                    根拠箇所（インスペクション報告書より抜粋）
+                  </div>
+                  <div class="issue-evidence-quote">
+                    「リビングエアコン配管の壁貫通部において断熱材の劣化を確認。結露による壁内結露のリスクあり。（P.15参照）」
+                  </div>
+                </div>
+
+                <div class="issue-actions">
+                  <button class="btn btn-sm btn-outline">
+                    <i class="fas fa-comment-alt mr-1"></i> コメント
+                  </button>
+                  <button class="btn btn-sm btn-outline">
+                    <i class="fas fa-flag mr-1"></i> フラグ
+                  </button>
+                  <button class="btn btn-sm btn-outline">
+                    <i class="fas fa-clipboard-check mr-1"></i> 対応済みにする
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-date">2025/03/30</div>
+              <div class="timeline-dot"></div>
+              <div class="timeline-content medium-risk">
+                <div class="issue-header">
+                  <h3 class="issue-title">管理規約の駐車場利用制限</h3>
+                  <span class="issue-badge">中リスク</span>
+                </div>
+
+                <div class="issue-meta">
+                  <div class="issue-meta-item">
+                    <i class="fas fa-folder"></i> 重要事項説明書
+                  </div>
+                  <div class="issue-meta-item">
+                    <i class="fas fa-tag"></i> 法的問題
+                  </div>
+                  <div class="issue-meta-item">
+                    <i class="fas fa-calendar"></i> 2025/03/25
+                  </div>
+                </div>
+
+                <div class="issue-description">
+                  <p>
+                    マンション管理規約において、駐車場の利用に関する制限が設けられています。特に大型車（全長4.7m以上）の駐車が禁止されており、購入者が大型車を所有している場合は注意が必要です。
+                  </p>
+                </div>
+
+                <div class="issue-evidence">
+                  <div class="issue-evidence-title">
+                    根拠箇所（重要事項説明書より抜粋）
+                  </div>
+                  <div class="issue-evidence-quote">
+                    「管理規約第15条により、全長4.7m以上、全幅1.7m以上、全高1.5m以上の車両は駐車場を利用できない。（P.25参照）」
+                  </div>
+                </div>
+
+                <div class="issue-actions">
+                  <button class="btn btn-sm btn-outline">
+                    <i class="fas fa-comment-alt mr-1"></i> コメント
+                  </button>
+                  <button class="btn btn-sm btn-outline">
+                    <i class="fas fa-flag mr-1"></i> フラグ
+                  </button>
+                  <button class="btn btn-sm btn-outline">
+                    <i class="fas fa-clipboard-check mr-1"></i> 対応済みにする
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 低リスク事項 -->
+            <div class="timeline-item">
+              <div class="timeline-date">2025/03/28</div>
+              <div class="timeline-dot"></div>
+              <div class="timeline-content low-risk">
+                <div class="issue-header">
+                  <h3 class="issue-title">バルコニー手すりの塗装剥がれ</h3>
+                  <span class="issue-badge">低リスク</span>
+                </div>
+
+                <div class="issue-meta">
+                  <div class="issue-meta-item">
+                    <i class="fas fa-folder"></i> インスペクション報告書
+                  </div>
+                  <div class="issue-meta-item">
+                    <i class="fas fa-tag"></i> 物件状態
+                  </div>
+                  <div class="issue-meta-item">
+                    <i class="fas fa-calendar"></i> 2025/03/28
+                  </div>
+                </div>
+
+                <div class="issue-description">
+                  <p>
+                    バルコニーの手すり部分に塗装の剥がれが見られます。現時点で構造上の問題はなく、美観上の問題ですが、将来的に錆の原因となる可能性があります。次回の大規模修繕時に対応することを推奨します。
+                  </p>
+                </div>
+
+                <div class="issue-actions">
+                  <button class="btn btn-sm btn-outline">
+                    <i class="fas fa-comment-alt mr-1"></i> コメント
+                  </button>
+                  <button class="btn btn-sm btn-outline">
+                    <i class="fas fa-flag mr-1"></i> フラグ
+                  </button>
+                  <button class="btn btn-sm btn-outline">
+                    <i class="fas fa-clipboard-check mr-1"></i> 対応済みにする
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="issue-stats">
+            <h3 class="issue-stats-title">指摘事項カテゴリー分布</h3>
+
+            <div class="issue-category-chart">
+              <div
+                class="chart-segment segment-structure"
+                style="width: 15%"
+              ></div>
+              <div
+                class="chart-segment segment-facility"
+                style="width: 35%"
+              ></div>
+              <div class="chart-segment segment-legal" style="width: 20%"></div>
+              <div
+                class="chart-segment segment-condition"
+                style="width: 25%"
+              ></div>
+              <div class="chart-segment segment-other" style="width: 5%"></div>
+            </div>
+
+            <div class="chart-legend">
+              <div class="chart-legend-item">
+                <div class="legend-color segment-structure"></div>
+                <span>構造 (15%)</span>
+              </div>
+              <div class="chart-legend-item">
+                <div class="legend-color segment-facility"></div>
+                <span>設備 (35%)</span>
+              </div>
+              <div class="chart-legend-item">
+                <div class="legend-color segment-legal"></div>
+                <span>法的問題 (20%)</span>
+              </div>
+              <div class="chart-legend-item">
+                <div class="legend-color segment-condition"></div>
+                <span>物件状態 (25%)</span>
+              </div>
+              <div class="chart-legend-item">
+                <div class="legend-color segment-other"></div>
+                <span>その他 (5%)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="export-actions">
+            <button class="btn btn-outline">
+              <i class="far fa-file-pdf mr-1"></i> PDFでエクスポート
+            </button>
+            <button class="btn btn-outline">
+              <i class="far fa-envelope mr-1"></i> メールで共有
+            </button>
+            <button class="btn btn-primary">
+              <i class="fas fa-clipboard-list mr-1"></i> 対応計画作成
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // サイドバーの表示・非表示の切り替え
+      document.addEventListener("DOMContentLoaded", function () {
+        const toggleSidebarBtn = document.getElementById("toggleSidebar");
+        const sidebar = document.getElementById("sidebar");
+        const mainContent = document.getElementById("mainContent");
+
+        // サイドバーが非表示のデフォルト状態でメインコンテンツを最大幅に設定
+        mainContent.style.width = "100%";
+        mainContent.style.maxWidth = "100%";
+
+        toggleSidebarBtn.addEventListener("click", function () {
+          sidebar.classList.toggle("show");
+          if (sidebar.classList.contains("show")) {
+            mainContent.classList.add("sidebar-open");
+            mainContent.style.width = "calc(100% - 250px)";
+            mainContent.style.maxWidth = "calc(100% - 250px)";
+          } else {
+            mainContent.classList.remove("sidebar-open");
+            mainContent.style.width = "100%";
+            mainContent.style.maxWidth = "100%";
+          }
+        });
+
+        // アカウントメニューの表示・非表示
+        const userMenuToggle = document.getElementById("userMenuToggle");
+        const accountMenu = document.getElementById("accountMenu");
+
+        userMenuToggle.addEventListener("click", function (e) {
+          e.stopPropagation();
+          accountMenu.classList.toggle("show");
+        });
+
+        // 画面のどこかをクリックしたらメニューを閉じる
+        document.addEventListener("click", function () {
+          accountMenu.classList.remove("show");
+        });
+
+        // メニュー内のクリックはイベント伝播を止める
+        accountMenu.addEventListener("click", function (e) {
+          e.stopPropagation();
+        });
+      });
+    </script>
+  </body>
+</html>
+``` 

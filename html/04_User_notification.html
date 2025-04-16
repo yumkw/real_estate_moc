@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>不動産プロジェクト書類管理 - 新着通知</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/layout.css" />
+    <link rel="stylesheet" href="../css/pages.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- サイドバー -->
+    <div class="sidebar">
+      <div class="sidebar-sticky">
+        <div class="p-4">
+          <a href="02_User_home.html" class="navbar-brand">ドキュメント管理</a>
+        </div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="02_User_home.html">
+              <i class="fas fa-home mr-2"></i>
+              ホーム
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-file-alt mr-2"></i>
+              最近のドキュメント
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="06_User_notification.html">
+              <i class="fas fa-bell mr-2"></i>
+              通知
+              <span class="badge badge-primary ml-2">3</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="p-4 mt-4">
+          <h6
+            class="text-muted text-uppercase"
+            style="font-size: var(--fs-xs); letter-spacing: 1px"
+          >
+            プロジェクト
+          </h6>
+        </div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="11_project_home.html">
+              <i class="fas fa-building mr-2"></i>
+              グリーンハイツ渋谷
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-building mr-2"></i>
+              パークレジデンス六本木
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-building mr-2"></i>
+              サンライズガーデン横浜
+            </a>
+          </li>
+        </ul>
+
+        <div class="p-4 mt-4">
+          <h6
+            class="text-muted text-uppercase"
+            style="font-size: var(--fs-xs); letter-spacing: 1px"
+          >
+            設定
+          </h6>
+        </div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="09_User_account_menu.html">
+              <i class="fas fa-cog mr-2"></i>
+              アカウント設定
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="10_rules_settings.html">
+              <i class="fas fa-sliders-h mr-2"></i>
+              ルール設定
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-users mr-2"></i>
+              ユーザー管理
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="01_User_login.html">
+              <i class="fas fa-sign-out-alt mr-2"></i>
+              ログアウト
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <div class="main-content">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>通知</h1>
+        <div>
+          <button class="btn btn-outline-secondary">
+            <i class="fas fa-check-double"></i> すべて既読にする
+          </button>
+        </div>
+      </div>
+
+      <!-- 通知コンテナ -->
+      <div class="notifications-container">
+        <!-- フィルターツールバー -->
+        <div class="notifications-filter">
+          <div class="filter-group">
+            <span class="filter-label">ステータス:</span>
+            <select class="form-control form-control-sm">
+              <option>すべて</option>
+              <option selected>未確認</option>
+              <option>確認済み</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <span class="filter-label">日付:</span>
+            <select class="form-control form-control-sm">
+              <option>すべて</option>
+              <option selected>今週</option>
+              <option>先週</option>
+              <option>今月</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <span class="filter-label">書類タイプ:</span>
+            <select class="form-control form-control-sm">
+              <option selected>すべて</option>
+              <option>契約書</option>
+              <option>図面</option>
+              <option>見積書</option>
+              <option>請求書</option>
+            </select>
+          </div>
+          <div class="filter-group ml-auto">
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              placeholder="検索..."
+            />
+          </div>
+        </div>
+
+        <!-- 通知リスト -->
+        <div class="notifications-list">
+          <!-- 通知アイテム 1 -->
+          <a href="18_document_details.html" class="notification-item unread">
+            <div class="notification-icon">
+              <i class="fas fa-file-contract"></i>
+            </div>
+            <div class="notification-content">
+              <div class="notification-title">
+                <span>自動分類: 賃貸借契約書</span>
+                <span class="badge bg-primary">未確認</span>
+              </div>
+              <div class="notification-filename">
+                <div class="original-filename">
+                  <span class="filename-label">元ファイル名:</span>
+                  <span>contract_20250401_scan.pdf</span>
+                </div>
+                <div class="proposed-filename">
+                  <span class="filename-label">提案ファイル名:</span>
+                  <span>青山一丁目_賃貸借契約書_20250401.pdf</span>
+                </div>
+              </div>
+              <div class="notification-meta">
+                <span><i class="fas fa-clock"></i> 2025/04/15 14:30</span>
+                <span
+                  ><i class="fas fa-folder"></i>
+                  /青山一丁目/契約書/賃貸借契約書/</span
+                >
+                <span class="ai-confidence ai-confidence-high"
+                  >AI信頼度: 高</span
+                >
+              </div>
+            </div>
+          </a>
+
+          <!-- 通知アイテム 2 -->
+          <a href="18_document_details.html" class="notification-item unread">
+            <div class="notification-icon">
+              <i class="fas fa-file-invoice"></i>
+            </div>
+            <div class="notification-content">
+              <div class="notification-title">
+                <span>自動分類: 請求書</span>
+                <span class="badge bg-primary">未確認</span>
+              </div>
+              <div class="notification-filename">
+                <div class="original-filename">
+                  <span class="filename-label">元ファイル名:</span>
+                  <span>invoice_123456.pdf</span>
+                </div>
+                <div class="proposed-filename">
+                  <span class="filename-label">提案ファイル名:</span>
+                  <span>青山一丁目_設備工事請求書_20250414.pdf</span>
+                </div>
+              </div>
+              <div class="notification-meta">
+                <span><i class="fas fa-clock"></i> 2025/04/14 10:15</span>
+                <span
+                  ><i class="fas fa-folder"></i> /青山一丁目/経理/請求書/</span
+                >
+                <span class="ai-confidence ai-confidence-medium"
+                  >AI信頼度: 中</span
+                >
+              </div>
+            </div>
+          </a>
+
+          <!-- 通知アイテム 3 -->
+          <a href="18_document_details.html" class="notification-item unread">
+            <div class="notification-icon">
+              <i class="fas fa-file-alt"></i>
+            </div>
+            <div class="notification-content">
+              <div class="notification-title">
+                <span>自動分類: 見積書</span>
+                <span class="badge bg-primary">未確認</span>
+              </div>
+              <div class="notification-filename">
+                <div class="original-filename">
+                  <span class="filename-label">元ファイル名:</span>
+                  <span>estimate_20250410.pdf</span>
+                </div>
+                <div class="proposed-filename">
+                  <span class="filename-label">提案ファイル名:</span>
+                  <span>青山一丁目_内装工事見積書_20250410.pdf</span>
+                </div>
+              </div>
+              <div class="notification-meta">
+                <span><i class="fas fa-clock"></i> 2025/04/13 16:45</span>
+                <span
+                  ><i class="fas fa-folder"></i> /青山一丁目/経理/見積書/</span
+                >
+                <span class="ai-confidence ai-confidence-high"
+                  >AI信頼度: 高</span
+                >
+              </div>
+            </div>
+          </a>
+
+          <!-- 通知アイテム 4 -->
+          <a href="18_document_details.html" class="notification-item unread">
+            <div class="notification-icon">
+              <i class="fas fa-file-image"></i>
+            </div>
+            <div class="notification-content">
+              <div class="notification-title">
+                <span>自動分類: 図面</span>
+                <span class="badge bg-primary">未確認</span>
+              </div>
+              <div class="notification-filename">
+                <div class="original-filename">
+                  <span class="filename-label">元ファイル名:</span>
+                  <span>floor_plan_v2.pdf</span>
+                </div>
+                <div class="proposed-filename">
+                  <span class="filename-label">提案ファイル名:</span>
+                  <span>青山一丁目_3階平面図_rev2.pdf</span>
+                </div>
+              </div>
+              <div class="notification-meta">
+                <span><i class="fas fa-clock"></i> 2025/04/12 09:30</span>
+                <span
+                  ><i class="fas fa-folder"></i>
+                  /青山一丁目/設計/図面/平面図/</span
+                >
+                <span class="ai-confidence ai-confidence-low"
+                  >AI信頼度: 低</span
+                >
+              </div>
+            </div>
+          </a>
+
+          <!-- 通知アイテム 5 -->
+          <a href="18_document_details.html" class="notification-item">
+            <div class="notification-icon">
+              <i class="fas fa-file-pdf"></i>
+            </div>
+            <div class="notification-content">
+              <div class="notification-title">
+                <span>自動分類: 報告書</span>
+                <span class="badge bg-secondary">確認済み</span>
+              </div>
+              <div class="notification-filename">
+                <div class="original-filename">
+                  <span class="filename-label">元ファイル名:</span>
+                  <span>site_inspection_report.pdf</span>
+                </div>
+                <div class="proposed-filename">
+                  <span class="filename-label">提案ファイル名:</span>
+                  <span>青山一丁目_現場調査報告書_20250408.pdf</span>
+                </div>
+              </div>
+              <div class="notification-meta">
+                <span><i class="fas fa-clock"></i> 2025/04/08 15:20</span>
+                <span
+                  ><i class="fas fa-folder"></i> /青山一丁目/工事/報告書/</span
+                >
+                <span class="ai-confidence ai-confidence-high"
+                  >AI信頼度: 高</span
+                >
+              </div>
+            </div>
+          </a>
+
+          <!-- 通知アイテム 6 -->
+          <a href="18_document_details.html" class="notification-item">
+            <div class="notification-icon">
+              <i class="fas fa-file-signature"></i>
+            </div>
+            <div class="notification-content">
+              <div class="notification-title">
+                <span>自動分類: 覚書</span>
+                <span class="badge bg-secondary">確認済み</span>
+              </div>
+              <div class="notification-filename">
+                <div class="original-filename">
+                  <span class="filename-label">元ファイル名:</span>
+                  <span>memorandum_20250405.pdf</span>
+                </div>
+                <div class="proposed-filename">
+                  <span class="filename-label">提案ファイル名:</span>
+                  <span>青山一丁目_工事変更覚書_20250405.pdf</span>
+                </div>
+              </div>
+              <div class="notification-meta">
+                <span><i class="fas fa-clock"></i> 2025/04/05 11:10</span>
+                <span
+                  ><i class="fas fa-folder"></i> /青山一丁目/契約書/覚書/</span
+                >
+                <span class="ai-confidence ai-confidence-medium"
+                  >AI信頼度: 中</span
+                >
+              </div>
+            </div>
+          </a>
+
+          <!-- 追加の通知アイテムをここに追加 -->
+        </div>
+
+        <!-- 通知がない場合の表示 -->
+        <div class="empty-notifications" style="display: none">
+          <i class="fas fa-bell-slash"></i>
+          <h3>新しい通知はありません</h3>
+          <p>
+            書類がアップロードされると、自動分類の結果がここに表示されます。
+          </p>
+        </div>
+      </div>
+
+      <!-- ページネーション -->
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="text-muted">全18件中 1-6件を表示</div>
+        <ul class="pagination">
+          <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1">前へ</a>
+          </li>
+          <li class="page-item active">
+            <a class="page-link" href="#">1</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">2</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">3</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">次へ</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // 通知アイテムのホバーエフェクト
+        const notificationItems =
+          document.querySelectorAll(".notification-item");
+        notificationItems.forEach((item) => {
+          item.addEventListener("mouseenter", function () {
+            this.style.backgroundColor = "var(--gray-50)";
+          });
+
+          item.addEventListener("mouseleave", function () {
+            this.style.backgroundColor = "";
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>書類分類確認 - 不動産プロジェクト書類管理</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/pages.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- サイドバー -->
+    <div class="sidebar">
+      <div class="sidebar-sticky">
+        <div class="p-4">
+          <a href="02_User_home.html" class="navbar-brand">ドキュメント管理</a>
+        </div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="02_User_home.html">
+              <i class="fas fa-home mr-2"></i>
+              ホーム
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-file-alt mr-2"></i>
+              最近のドキュメント
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="06_User_notification.html">
+              <i class="fas fa-bell mr-2"></i>
+              通知
+              <span class="badge badge-primary ml-2">3</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="p-4 mt-4">
+          <h6
+            class="text-muted text-uppercase"
+            style="font-size: var(--fs-xs); letter-spacing: 1px"
+          >
+            プロジェクト
+          </h6>
+        </div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="11_project_home.html">
+              <i class="fas fa-building mr-2"></i>
+              グリーンハイツ渋谷
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-building mr-2"></i>
+              パークレジデンス六本木
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-building mr-2"></i>
+              サンライズガーデン横浜
+            </a>
+          </li>
+        </ul>
+
+        <div class="p-4 mt-4">
+          <h6
+            class="text-muted text-uppercase"
+            style="font-size: var(--fs-xs); letter-spacing: 1px"
+          >
+            設定
+          </h6>
+        </div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="09_User_account_menu.html">
+              <i class="fas fa-cog mr-2"></i>
+              アカウント設定
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="10_rules_settings.html">
+              <i class="fas fa-sliders-h mr-2"></i>
+              ルール設定
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-users mr-2"></i>
+              ユーザー管理
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="01_User_login.html">
+              <i class="fas fa-sign-out-alt mr-2"></i>
+              ログアウト
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <div class="main-content">
+      <!-- プロジェクトバナー -->
+      <div class="project-banner">
+        <div class="project-details">
+          <h1>グリーンハイツ渋谷</h1>
+          <div class="project-meta">
+            <span class="badge badge-success">進行中</span>
+            <span class="text-muted ml-3">更新日: 2025/04/10</span>
+          </div>
+        </div>
+
+        <div class="d-flex">
+          <button class="btn btn-outline mr-2">
+            <i class="fas fa-eye mr-1"></i> 基本情報
+          </button>
+          <button class="btn btn-primary">
+            <i class="fas fa-edit mr-1"></i> 編集
+          </button>
+        </div>
+      </div>
+
+      <div class="classification-container">
+        <div class="classification-header">
+          <h2>書類分類・ファイル名確認</h2>
+          <div class="status-badge">
+            <span class="badge badge-warning">確認待ち</span>
+            <span class="text-muted">8件のファイル</span>
+          </div>
+        </div>
+
+        <div class="classification-info">
+          <i class="fas fa-info-circle"></i>
+          <div>
+            <p class="mb-1">
+              AIによる自動分類およびタグ付けを行いました。ファイル名と分類結果を確認し、必要に応じて修正してください。
+            </p>
+            <p class="mb-0">
+              修正後、「確認完了」ボタンをクリックすると処理が実行されます。
+            </p>
+          </div>
+        </div>
+
+        <div class="actions-toolbar">
+          <div class="filter-option active">
+            <i class="fas fa-filter"></i>
+            <span>すべて (8)</span>
+          </div>
+          <div class="filter-option">
+            <i class="fas fa-check-circle"></i>
+            <span>確認済み (2)</span>
+          </div>
+          <div class="filter-option">
+            <i class="fas fa-exclamation-circle"></i>
+            <span>要確認 (6)</span>
+          </div>
+
+          <div class="ml-auto">
+            <button class="btn btn-outline mr-2">
+              <i class="fas fa-sync-alt mr-1"></i> AIで再分析
+            </button>
+            <button class="btn btn-primary">
+              <i class="fas fa-check-circle mr-1"></i> すべて確認完了
+            </button>
+          </div>
+        </div>
+
+        <div class="classification-table">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th style="width: 50px" class="text-center">
+                  <input type="checkbox" checked />
+                </th>
+                <th>元のファイル名</th>
+                <th>提案ファイル名</th>
+                <th>ドキュメントタイプ</th>
+                <th>自動タグ</th>
+                <th>提案フォルダ</th>
+                <th style="width: 100px">ステータス</th>
+                <th style="width: 120px">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-center">
+                  <input type="checkbox" checked />
+                </td>
+                <td>
+                  <i class="far fa-file-pdf file-type-icon pdf-icon"></i>
+                  重要事項説明書.pdf
+                </td>
+                <td>
+                  <div class="editable-field">
+                    グリーンハイツ渋谷_重要事項説明書_20250405.pdf
+                  </div>
+                </td>
+                <td>
+                  <div class="editable-field">重要事項説明書</div>
+                  <div class="confidence-indicator confidence-high">
+                    <div class="confidence-bar">
+                      <div class="confidence-bar-fill"></div>
+                    </div>
+                    <span>高</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="tag-editor">
+                    <span class="tag">重説 <i class="fas fa-times"></i></span>
+                    <span class="tag">契約前 <i class="fas fa-times"></i></span>
+                    <span class="tag"
+                      >法定書類 <i class="fas fa-times"></i
+                    ></span>
+                  </div>
+                </td>
+                <td>
+                  <div class="editable-field">/契約書類/重要事項説明書</div>
+                </td>
+                <td>
+                  <span class="badge badge-success">確認済み</span>
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-outline mr-1">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td class="text-center">
+                  <input type="checkbox" checked />
+                </td>
+                <td>
+                  <i class="far fa-file-pdf file-type-icon pdf-icon"></i>
+                  売買契約書.pdf
+                </td>
+                <td>
+                  <div class="editable-field">
+                    グリーンハイツ渋谷_売買契約書_20250410.pdf
+                  </div>
+                </td>
+                <td>
+                  <div class="editable-field">売買契約書</div>
+                  <div class="confidence-indicator confidence-high">
+                    <div class="confidence-bar">
+                      <div class="confidence-bar-fill"></div>
+                    </div>
+                    <span>高</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="tag-editor">
+                    <span class="tag">契約書 <i class="fas fa-times"></i></span>
+                    <span class="tag">売買 <i class="fas fa-times"></i></span>
+                  </div>
+                </td>
+                <td>
+                  <div class="editable-field">/契約書類/売買契約書</div>
+                </td>
+                <td>
+                  <span class="badge badge-success">確認済み</span>
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-outline mr-1">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td class="text-center">
+                  <input type="checkbox" checked />
+                </td>
+                <td>
+                  <i class="far fa-file-image file-type-icon img-icon"></i>
+                  間取り図.jpg
+                </td>
+                <td>
+                  <div class="editable-field">
+                    グリーンハイツ渋谷_間取り図_2LDK_20250402.jpg
+                  </div>
+                </td>
+                <td>
+                  <div class="editable-field">間取り図</div>
+                  <div class="confidence-indicator confidence-high">
+                    <div class="confidence-bar">
+                      <div class="confidence-bar-fill"></div>
+                    </div>
+                    <span>高</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="tag-editor">
+                    <span class="tag">図面 <i class="fas fa-times"></i></span>
+                    <span class="tag">2LDK <i class="fas fa-times"></i></span>
+                  </div>
+                </td>
+                <td>
+                  <div class="editable-field">/設計図書/間取り図</div>
+                </td>
+                <td>
+                  <span class="badge badge-warning">要確認</span>
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-outline mr-1">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td class="text-center">
+                  <input type="checkbox" checked />
+                </td>
+                <td>
+                  <i class="far fa-file-word file-type-icon doc-icon"></i>
+                  物件状況報告書.docx
+                </td>
+                <td>
+                  <div class="editable-field">
+                    グリーンハイツ渋谷_物件状況報告書_20250330.docx
+                  </div>
+                </td>
+                <td>
+                  <div class="editable-field">物件状況報告書</div>
+                  <div class="confidence-indicator confidence-medium">
+                    <div class="confidence-bar">
+                      <div class="confidence-bar-fill"></div>
+                    </div>
+                    <span>中</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="tag-editor">
+                    <span class="tag">調査 <i class="fas fa-times"></i></span>
+                    <span class="tag"
+                      >インスペクション <i class="fas fa-times"></i
+                    ></span>
+                  </div>
+                </td>
+                <td>
+                  <div class="editable-field">/検査報告書</div>
+                </td>
+                <td>
+                  <span class="badge badge-warning">要確認</span>
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-outline mr-1">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td class="text-center">
+                  <input type="checkbox" checked />
+                </td>
+                <td>
+                  <i class="far fa-file-pdf file-type-icon pdf-icon"></i>
+                  登記簿謄本.pdf
+                </td>
+                <td>
+                  <div class="editable-field">
+                    グリーンハイツ渋谷_登記簿謄本_20250325.pdf
+                  </div>
+                </td>
+                <td>
+                  <div class="editable-field">登記関連書類</div>
+                  <div class="confidence-indicator confidence-high">
+                    <div class="confidence-bar">
+                      <div class="confidence-bar-fill"></div>
+                    </div>
+                    <span>高</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="tag-editor">
+                    <span class="tag">登記 <i class="fas fa-times"></i></span>
+                    <span class="tag">法務局 <i class="fas fa-times"></i></span>
+                  </div>
+                </td>
+                <td>
+                  <div class="editable-field">/登記関連/登記簿謄本</div>
+                </td>
+                <td>
+                  <span class="badge badge-warning">要確認</span>
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-outline mr-1">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td class="text-center">
+                  <input type="checkbox" checked />
+                </td>
+                <td>
+                  <i class="far fa-file-image file-type-icon img-icon"></i>
+                  外観写真.png
+                </td>
+                <td>
+                  <div class="editable-field">
+                    グリーンハイツ渋谷_外観写真_20250331.png
+                  </div>
+                </td>
+                <td>
+                  <div class="editable-field">物件写真</div>
+                  <div class="confidence-indicator confidence-high">
+                    <div class="confidence-bar">
+                      <div class="confidence-bar-fill"></div>
+                    </div>
+                    <span>高</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="tag-editor">
+                    <span class="tag">外観 <i class="fas fa-times"></i></span>
+                    <span class="tag">写真 <i class="fas fa-times"></i></span>
+                  </div>
+                </td>
+                <td>
+                  <div class="editable-field">/写真/外観</div>
+                </td>
+                <td>
+                  <span class="badge badge-warning">要確認</span>
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-outline mr-1">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td class="text-center">
+                  <input type="checkbox" checked />
+                </td>
+                <td>
+                  <i class="far fa-file-pdf file-type-icon pdf-icon"></i>
+                  建築確認済証.pdf
+                </td>
+                <td>
+                  <div class="editable-field">
+                    グリーンハイツ渋谷_建築確認済証_20250320.pdf
+                  </div>
+                </td>
+                <td>
+                  <div class="editable-field">法定点検・検査関連</div>
+                  <div class="confidence-indicator confidence-medium">
+                    <div class="confidence-bar">
+                      <div class="confidence-bar-fill"></div>
+                    </div>
+                    <span>中</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="tag-editor">
+                    <span class="tag"
+                      >建築確認 <i class="fas fa-times"></i
+                    ></span>
+                    <span class="tag">検査済 <i class="fas fa-times"></i></span>
+                  </div>
+                </td>
+                <td>
+                  <div class="editable-field">/検査報告書/建築確認</div>
+                </td>
+                <td>
+                  <span class="badge badge-warning">要確認</span>
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-outline mr-1">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td class="text-center">
+                  <input type="checkbox" checked />
+                </td>
+                <td>
+                  <i class="far fa-file-pdf file-type-icon pdf-icon"></i>
+                  doc_20250312_123456.pdf
+                </td>
+                <td>
+                  <div class="editable-field">
+                    グリーンハイツ渋谷_修繕履歴報告書_20250312.pdf
+                  </div>
+                </td>
+                <td>
+                  <div class="editable-field">修繕履歴報告書</div>
+                  <div class="confidence-indicator confidence-low">
+                    <div class="confidence-bar">
+                      <div class="confidence-bar-fill"></div>
+                    </div>
+                    <span>低</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="tag-editor">
+                    <span class="tag">修繕 <i class="fas fa-times"></i></span>
+                    <span class="tag"
+                      >管理組合 <i class="fas fa-times"></i
+                    ></span>
+                    <input
+                      type="text"
+                      placeholder="+ タグを追加"
+                      style="
+                        border: none;
+                        outline: none;
+                        font-size: var(--fs-xs);
+                        width: 80px;
+                      "
+                    />
+                  </div>
+                </td>
+                <td>
+                  <div class="editable-field">/管理組合関連/修繕履歴</div>
+                </td>
+                <td>
+                  <span class="badge badge-warning">要確認</span>
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-outline mr-1">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="rename-rules">
+          <h3 class="mb-3">適用リネームルール</h3>
+          <div class="rule-item">
+            <i class="fas fa-magic"></i>
+            <div class="rule-content">
+              <div class="rule-title">標準命名規則</div>
+              <div class="rule-description">
+                プロジェクト名_ドキュメントタイプ_[任意の識別子]_YYYYMMDD.拡張子
+              </div>
+            </div>
+            <div>
+              <button class="btn btn-sm btn-outline">
+                <i class="fas fa-edit mr-1"></i> 編集
+              </button>
+            </div>
+          </div>
+          <div class="rule-item">
+            <i class="fas fa-folder"></i>
+            <div class="rule-content">
+              <div class="rule-title">書類種別に基づくフォルダ分け</div>
+              <div class="rule-description">
+                契約書類、設計図書、検査報告書などの書類種別に基づいて自動的にフォルダ分類
+              </div>
+            </div>
+            <div>
+              <button class="btn btn-sm btn-outline">
+                <i class="fas fa-edit mr-1"></i> 編集
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="folder-structure">
+          <h3 class="mb-3">フォルダ構成プレビュー</h3>
+          <div class="folder-preview">
+            <div class="folder-tree">
+              <div class="folder-node has-children">
+                <i class="fas fa-folder folder-icon"></i>
+                <span>グリーンハイツ渋谷</span>
+                <span class="folder-count">8ファイル</span>
+              </div>
+
+              <div class="folder-children">
+                <div class="folder-node has-children">
+                  <i class="fas fa-folder folder-icon"></i>
+                  <span>契約書類</span>
+                  <span class="folder-count">2ファイル</span>
+                </div>
+
+                <div class="folder-children">
+                  <div class="folder-node">
+                    <i class="fas fa-folder folder-icon"></i>
+                    <span>重要事項説明書</span>
+                    <span class="folder-count">1ファイル</span>
+                  </div>
+                  <div class="folder-node">
+                    <i class="fas fa-folder folder-icon"></i>
+                    <span>売買契約書</span>
+                    <span class="folder-count">1ファイル</span>
+                  </div>
+                </div>
+
+                <div class="folder-node has-children">
+                  <i class="fas fa-folder folder-icon"></i>
+                  <span>設計図書</span>
+                  <span class="folder-count">1ファイル</span>
+                </div>
+
+                <div class="folder-children">
+                  <div class="folder-node">
+                    <i class="fas fa-folder folder-icon"></i>
+                    <span>間取り図</span>
+                    <span class="folder-count">1ファイル</span>
+                  </div>
+                </div>
+
+                <div class="folder-node has-children">
+                  <i class="fas fa-folder folder-icon"></i>
+                  <span>検査報告書</span>
+                  <span class="folder-count">2ファイル</span>
+                </div>
+
+                <div class="folder-children">
+                  <div class="folder-node">
+                    <i class="fas fa-folder folder-icon"></i>
+                    <span>建築確認</span>
+                    <span class="folder-count">1ファイル</span>
+                  </div>
+                  <div class="folder-node">
+                    <i class="fas fa-file-alt file-icon"></i>
+                    <span>グリーンハイツ渋谷_物件状況報告書_20250330.docx</span>
+                  </div>
+                </div>
+
+                <div class="folder-node has-children">
+                  <i class="fas fa-folder folder-icon"></i>
+                  <span>登記関連</span>
+                  <span class="folder-count">1ファイル</span>
+                  <span class="folder-new">新規</span>
+                </div>
+
+                <div class="folder-children">
+                  <div class="folder-node">
+                    <i class="fas fa-folder folder-icon"></i>
+                    <span>登記簿謄本</span>
+                    <span class="folder-count">1ファイル</span>
+                    <span class="folder-new">新規</span>
+                  </div>
+                </div>
+
+                <div class="folder-node has-children">
+                  <i class="fas fa-folder folder-icon"></i>
+                  <span>写真</span>
+                  <span class="folder-count">1ファイル</span>
+                  <span class="folder-new">新規</span>
+                </div>
+
+                <div class="folder-children">
+                  <div class="folder-node">
+                    <i class="fas fa-folder folder-icon"></i>
+                    <span>外観</span>
+                    <span class="folder-count">1ファイル</span>
+                    <span class="folder-new">新規</span>
+                  </div>
+                </div>
+
+                <div class="folder-node has-children">
+                  <i class="fas fa-folder folder-icon"></i>
+                  <span>管理組合関連</span>
+                  <span class="folder-count">1ファイル</span>
+                  <span class="folder-new">新規</span>
+                </div>
+
+                <div class="folder-children">
+                  <div class="folder-node">
+                    <i class="fas fa-folder folder-icon"></i>
+                    <span>修繕履歴</span>
+                    <span class="folder-count">1ファイル</span>
+                    <span class="folder-new">新規</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-5">
+          <button class="btn btn-secondary">
+            <i class="fas fa-arrow-left mr-1"></i> 前へ戻る
+          </button>
+          <button class="btn btn-primary">
+            <i class="fas fa-check-circle mr-1"></i> 確認完了
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ファイルプレビューモーダル -->
+    <div class="modal-backdrop">
+      <div class="modal file-preview-modal" style="max-width: 900px">
+        <div class="file-preview-toolbar">
+          <div class="file-name">
+            <i class="far fa-file-pdf file-type-icon pdf-icon"></i>
+            グリーンハイツ渋谷_重要事項説明書_20250405.pdf
+          </div>
+          <div class="file-actions">
+            <button class="btn btn-sm">
+              <i class="fas fa-download mr-1"></i> ダウンロード
+            </button>
+            <button class="btn btn-sm">
+              <i class="fas fa-edit mr-1"></i> 編集
+            </button>
+            <button class="btn btn-sm">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <div class="file-preview-content">
+          <iframe class="file-preview-pdf" src="about:blank"></iframe>
+        </div>
+        <div class="file-preview-info">
+          <div class="file-preview-info-group">
+            <div class="file-preview-info-label">元のファイル名</div>
+            <div class="file-preview-info-value">重要事項説明書.pdf</div>
+          </div>
+          <div class="file-preview-info-group">
+            <div class="file-preview-info-label">自動分類タイプ</div>
+            <div class="file-preview-info-value">
+              重要事項説明書
+              <span class="badge badge-success ml-2">信頼度: 高</span>
+            </div>
+          </div>
+          <div class="file-preview-info-group">
+            <div class="file-preview-info-label">提案ファイル名</div>
+            <div class="file-preview-info-value">
+              グリーンハイツ渋谷_重要事項説明書_20250405.pdf
+            </div>
+          </div>
+          <div class="file-preview-info-group">
+            <div class="file-preview-info-label">提案フォルダ</div>
+            <div class="file-preview-info-value">/契約書類/重要事項説明書</div>
+          </div>
+          <div class="file-preview-info-group">
+            <div class="file-preview-info-label">自動タグ</div>
+            <div class="file-preview-info-value">
+              <span class="tag">重説</span>
+              <span class="tag">契約前</span>
+              <span class="tag">法定書類</span>
+            </div>
+          </div>
+          <div class="file-preview-info-group">
+            <div class="file-preview-info-label">アップロード日時</div>
+            <div class="file-preview-info-value">2025/04/08 14:23</div>
+          </div>
+          <div class="file-preview-info-group">
+            <div class="file-preview-info-label">アップロード者</div>
+            <div class="file-preview-info-value">鈴木 一郎</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ファイル編集モーダル -->
+    <div class="modal-backdrop" style="display: none">
+      <div class="modal file-edit-modal" style="max-width: 700px">
+        <div class="modal-header">
+          <h2>ファイル情報編集</h2>
+          <button class="btn btn-sm">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="file-edit-form-row">
+            <div class="file-edit-form-col">
+              <div class="file-edit-form-group">
+                <label class="file-edit-label">元のファイル名</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  value="重要事項説明書.pdf"
+                  readonly
+                />
+              </div>
+            </div>
+            <div class="file-edit-form-col">
+              <div class="file-edit-form-group">
+                <label class="file-edit-label">ファイルタイプ</label>
+                <select class="form-control">
+                  <option selected>重要事項説明書</option>
+                  <option>売買契約書</option>
+                  <option>物件状況報告書</option>
+                  <option>登記関連書類</option>
+                  <option>建築確認関連</option>
+                  <option>測量図面</option>
+                  <option>物件写真</option>
+                  <option>その他</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="file-edit-form-group">
+            <label class="file-edit-label">提案ファイル名</label>
+            <input
+              type="text"
+              class="form-control"
+              value="グリーンハイツ渋谷_重要事項説明書_20250405.pdf"
+            />
+            <span class="file-edit-help"
+              >命名規則:
+              プロジェクト名_ドキュメントタイプ_[識別子]_YYYYMMDD.拡張子</span
+            >
+          </div>
+
+          <div class="file-edit-form-group">
+            <label class="file-edit-label">タグ</label>
+            <div class="tag-input-container">
+              <span class="tag">重説 <i class="fas fa-times"></i></span>
+              <span class="tag">契約前 <i class="fas fa-times"></i></span>
+              <span class="tag">法定書類 <i class="fas fa-times"></i></span>
+              <input class="tag-input" placeholder="+ タグを追加" />
+            </div>
+            <div class="tag-suggestion">
+              <span class="tag">売買</span>
+              <span class="tag">不動産取引</span>
+              <span class="tag">説明義務</span>
+              <span class="tag">重要事項</span>
+            </div>
+          </div>
+
+          <div class="file-edit-form-group">
+            <label class="file-edit-label">保存先フォルダ</label>
+            <div class="folder-path-select">
+              <div class="folder-path-display">
+                <i class="fas fa-folder"></i>
+                <span class="folder-path-text">/契約書類/重要事項説明書</span>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="folder-path-dropdown" style="display: none">
+                <div
+                  class="folder-path-dropdown-item folder-path-level-0 active"
+                >
+                  <i class="fas fa-folder folder-icon"></i>
+                  <span class="folder-name">契約書類</span>
+                </div>
+                <div
+                  class="folder-path-dropdown-item folder-path-level-1 active"
+                >
+                  <i class="fas fa-folder folder-icon"></i>
+                  <span class="folder-name">重要事項説明書</span>
+                </div>
+                <div class="folder-path-dropdown-item folder-path-level-0">
+                  <i class="fas fa-folder folder-icon"></i>
+                  <span class="folder-name">設計図書</span>
+                </div>
+                <div class="folder-path-dropdown-item folder-path-level-1">
+                  <i class="fas fa-folder folder-icon"></i>
+                  <span class="folder-name">間取り図</span>
+                </div>
+                <div class="folder-path-dropdown-item folder-path-level-0">
+                  <i class="fas fa-folder folder-icon"></i>
+                  <span class="folder-name">検査報告書</span>
+                </div>
+                <div class="folder-path-dropdown-item folder-path-level-0">
+                  <i class="fas fa-folder folder-icon"></i>
+                  <span class="folder-name">写真</span>
+                </div>
+                <div class="folder-path-dropdown-item folder-path-level-0">
+                  <i class="fas fa-folder folder-icon"></i>
+                  <span class="folder-name">登記関連</span>
+                </div>
+                <div class="folder-path-dropdown-item folder-path-level-0">
+                  <i class="fas fa-folder-plus"></i>
+                  <span class="folder-name">新規フォルダを作成...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="file-edit-form-group">
+            <label class="file-edit-label">メモ</label>
+            <textarea
+              class="form-control"
+              rows="3"
+              placeholder="このファイルに関するメモを入力してください"
+            ></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary mr-2">キャンセル</button>
+          <button class="btn btn-primary">保存</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右クリックコンテキストメニュー -->
+    <div class="context-menu" style="display: none; top: 300px; left: 400px">
+      <div class="context-menu-item">
+        <i class="fas fa-eye"></i>
+        <span>プレビュー</span>
+      </div>
+      <div class="context-menu-item">
+        <i class="fas fa-edit"></i>
+        <span>編集</span>
+      </div>
+      <div class="context-menu-divider"></div>
+      <div class="context-menu-item">
+        <i class="fas fa-check-circle"></i>
+        <span>確認済みにする</span>
+      </div>
+      <div class="context-menu-item">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>要確認にする</span>
+      </div>
+      <div class="context-menu-divider"></div>
+      <div class="context-menu-item">
+        <i class="fas fa-download"></i>
+        <span>ダウンロード</span>
+      </div>
+      <div class="context-menu-item">
+        <i class="fas fa-trash-alt"></i>
+        <span>削除</span>
+      </div>
+    </div>
+  </body>
+</html>

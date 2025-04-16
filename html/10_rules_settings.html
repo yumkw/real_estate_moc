@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ルール設定 - 不動産プロジェクト書類管理</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/pages.css" />
+    <link rel="stylesheet" href="../css/layout.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- サイドバー -->
+    <div class="sidebar">
+      <div class="sidebar-sticky">
+        <div class="p-4">
+          <a href="02_User_home.html" class="navbar-brand">ドキュメント管理</a>
+        </div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="02_User_home.html">
+              <i class="fas fa-home mr-2"></i>
+              ホーム
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-file-alt mr-2"></i>
+              最近のドキュメント
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="06_User_notification.html">
+              <i class="fas fa-bell mr-2"></i>
+              通知
+              <span class="badge badge-primary ml-2">3</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="p-4 mt-4">
+          <h6
+            class="text-muted text-uppercase"
+            style="font-size: var(--fs-xs); letter-spacing: 1px"
+          >
+            プロジェクト
+          </h6>
+        </div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="11_project_home.html">
+              <i class="fas fa-building mr-2"></i>
+              グリーンハイツ渋谷
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-building mr-2"></i>
+              パークレジデンス六本木
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-building mr-2"></i>
+              サンライズガーデン横浜
+            </a>
+          </li>
+        </ul>
+
+        <div class="p-4 mt-4">
+          <h6
+            class="text-muted text-uppercase"
+            style="font-size: var(--fs-xs); letter-spacing: 1px"
+          >
+            設定
+          </h6>
+        </div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="09_User_account_menu.html">
+              <i class="fas fa-cog mr-2"></i>
+              アカウント設定
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="10_rules_settings.html">
+              <i class="fas fa-sliders-h mr-2"></i>
+              ルール設定
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-users mr-2"></i>
+              ユーザー管理
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="01_User_login.html">
+              <i class="fas fa-sign-out-alt mr-2"></i>
+              ログアウト
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <div class="main-content">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>自動処理ルール設定</h1>
+
+        <button class="btn btn-primary">
+          <i class="fas fa-plus mr-1"></i> 新規ルール作成
+        </button>
+      </div>
+
+      <div class="alert alert-info mb-4">
+        <div class="d-flex">
+          <i class="fas fa-info-circle mr-3" style="font-size: 24px"></i>
+          <div>
+            <h4 class="alert-heading">自動処理ルールについて</h4>
+            <p class="mb-0">
+              書類アップロード時にファイル名の自動リネームやフォルダ分け、タグ付けを行うルールを設定できます。条件に一致する書類に対してどのような処理を行うか定義しましょう。
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header">
+          <h2 class="mb-0" style="font-size: var(--fs-xl)">有効なルール</h2>
+        </div>
+        <div class="card-body">
+          <!-- ルール1 -->
+          <div class="rule-card">
+            <div class="rule-card-header">
+              <div>
+                <h3
+                  style="font-size: var(--fs-lg); margin-bottom: var(--space-1)"
+                >
+                  建築確認申請書の自動分類
+                </h3>
+                <p class="text-muted mb-0" style="font-size: var(--fs-sm)">
+                  優先度: 高 • 最終更新: 2025/04/01
+                </p>
+              </div>
+              <div class="rule-actions">
+                <div class="custom-control custom-switch mr-3">
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    id="rule1Active"
+                    checked
+                  />
+                  <label class="custom-control-label" for="rule1Active"
+                    >有効</label
+                  >
+                </div>
+                <button class="btn btn-sm btn-outline">
+                  <i class="fas fa-pen mr-1"></i> 編集
+                </button>
+                <button class="btn btn-sm btn-outline">
+                  <i class="fas fa-copy mr-1"></i> 複製
+                </button>
+                <button class="btn btn-sm btn-outline text-danger">
+                  <i class="fas fa-trash mr-1"></i> 削除
+                </button>
+              </div>
+            </div>
+            <div class="rule-card-body">
+              <div class="rule-condition">
+                <div class="rule-condition-title">
+                  <i class="fas fa-filter text-secondary"></i> 条件
+                </div>
+                <div>
+                  ファイル名に<strong>「建築確認」または「確認申請」</strong>が含まれる
+                  <strong>AND</strong>
+                  OCRテキストに<strong>「建築基準法」</strong>が含まれる
+                </div>
+                <div class="rule-expression">
+                  (filename CONTAINS "建築確認" OR filename CONTAINS "確認申請")
+                  AND ocr_text CONTAINS "建築基準法"
+                </div>
+              </div>
+
+              <div class="rule-action">
+                <div class="rule-action-title">
+                  <i class="fas fa-magic"></i> 実行アクション
+                </div>
+                <ul>
+                  <li>
+                    ファイル名を<strong>「{プロジェクト名}_建築確認申請書_{年月日}」</strong>にリネーム
+                  </li>
+                  <li>フォルダ<strong>「申請書類/建築確認」</strong>に移動</li>
+                  <li>
+                    タグ<strong>「建築確認」「許認可」「重要書類」</strong>を付与
+                  </li>
+                  <li>担当者<strong>「建築担当」</strong>に通知</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- ルール2 -->
+          <div class="rule-card">
+            <div class="rule-card-header">
+              <div>
+                <h3
+                  style="font-size: var(--fs-lg); margin-bottom: var(--space-1)"
+                >
+                  重要事項説明書の自動分類
+                </h3>
+                <p class="text-muted mb-0" style="font-size: var(--fs-sm)">
+                  優先度: 中 • 最終更新: 2025/03/25
+                </p>
+              </div>
+              <div class="rule-actions">
+                <div class="custom-control custom-switch mr-3">
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    id="rule2Active"
+                    checked
+                  />
+                  <label class="custom-control-label" for="rule2Active"
+                    >有効</label
+                  >
+                </div>
+                <button class="btn btn-sm btn-outline">
+                  <i class="fas fa-pen mr-1"></i> 編集
+                </button>
+                <button class="btn btn-sm btn-outline">
+                  <i class="fas fa-copy mr-1"></i> 複製
+                </button>
+                <button class="btn btn-sm btn-outline text-danger">
+                  <i class="fas fa-trash mr-1"></i> 削除
+                </button>
+              </div>
+            </div>
+            <div class="rule-card-body">
+              <div class="rule-condition">
+                <div class="rule-condition-title">
+                  <i class="fas fa-filter text-secondary"></i> 条件
+                </div>
+                <div>
+                  ファイル名に<strong>「重要事項」</strong>が含まれる
+                  <strong>OR</strong>
+                  OCRテキストに<strong>「重要事項説明書」</strong>が含まれる
+                </div>
+                <div class="rule-expression">
+                  filename CONTAINS "重要事項" OR ocr_text CONTAINS
+                  "重要事項説明書"
+                </div>
+              </div>
+
+              <div class="rule-action">
+                <div class="rule-action-title">
+                  <i class="fas fa-magic"></i> 実行アクション
+                </div>
+                <ul>
+                  <li>
+                    ファイル名を<strong>「{プロジェクト名}_重要事項説明書_{年月日}」</strong>にリネーム
+                  </li>
+                  <li>
+                    フォルダ<strong>「契約書類/重要事項説明書」</strong>に移動
+                  </li>
+                  <li>
+                    タグ<strong>「重要事項」「契約書類」「重要書類」</strong>を付与
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- ルール3 -->
+          <div class="rule-card">
+            <div class="rule-card-header">
+              <div>
+                <h3
+                  style="font-size: var(--fs-lg); margin-bottom: var(--space-1)"
+                >
+                  図面ファイルの自動分類
+                </h3>
+                <p class="text-muted mb-0" style="font-size: var(--fs-sm)">
+                  優先度: 中 • 最終更新: 2025/03/20
+                </p>
+              </div>
+              <div class="rule-actions">
+                <div class="custom-control custom-switch mr-3">
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    id="rule3Active"
+                    checked
+                  />
+                  <label class="custom-control-label" for="rule3Active"
+                    >有効</label
+                  >
+                </div>
+                <button class="btn btn-sm btn-outline">
+                  <i class="fas fa-pen mr-1"></i> 編集
+                </button>
+                <button class="btn btn-sm btn-outline">
+                  <i class="fas fa-copy mr-1"></i> 複製
+                </button>
+                <button class="btn btn-sm btn-outline text-danger">
+                  <i class="fas fa-trash mr-1"></i> 削除
+                </button>
+              </div>
+            </div>
+            <div class="rule-card-body">
+              <div class="rule-condition">
+                <div class="rule-condition-title">
+                  <i class="fas fa-filter text-secondary"></i> 条件
+                </div>
+                <div>
+                  ファイルタイプが<strong>DWG、DXF、PDF</strong>のいずれか
+                  <strong>AND</strong>
+                  (ファイル名に<strong>「平面図」「立面図」「断面図」「配置図」</strong>のいずれかが含まれる
+                  <strong>OR</strong>
+                  OCRテキストに<strong>「図面」「設計図」</strong>のいずれかが含まれる)
+                </div>
+                <div class="rule-expression">
+                  file_type IN ["DWG", "DXF", "PDF"] AND (filename CONTAINS_ANY
+                  ["平面図", "立面図", "断面図", "配置図"] OR ocr_text
+                  CONTAINS_ANY ["図面", "設計図"])
+                </div>
+              </div>
+
+              <div class="rule-action">
+                <div class="rule-action-title">
+                  <i class="fas fa-magic"></i> 実行アクション
+                </div>
+                <ul>
+                  <li>
+                    ファイル名を<strong>「{プロジェクト名}_{図面種類}_{年月日}_{版数}」</strong>にリネーム
+                  </li>
+                  <li>
+                    フォルダ<strong>「設計図面/{図面種類}」</strong>に移動
+                  </li>
+                  <li>タグ<strong>「図面」「{図面種類}」</strong>を付与</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 新規ルール作成モーダル -->
+      <div class="modal-backdrop" style="display: none">
+        <div class="modal" style="max-width: 800px">
+          <div class="modal-header">
+            <h2>新規ルール作成</h2>
+            <button class="btn btn-sm">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label>ルール名</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="例：契約書の自動分類"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>優先度</label>
+              <select class="form-control">
+                <option>高 - 他のルールより優先して適用</option>
+                <option selected>中 - 標準の優先度</option>
+                <option>低 - 他のルールの適用後に検討</option>
+              </select>
+            </div>
+
+            <hr class="my-4" />
+
+            <h4>条件設定</h4>
+            <p class="text-muted mb-3" style="font-size: var(--fs-sm)">
+              このルールを適用するための条件を設定します。
+            </p>
+
+            <div class="condition-row">
+              <select class="form-control" style="width: 200px">
+                <option>ファイル名</option>
+                <option>OCRテキスト</option>
+                <option>ファイルタイプ</option>
+                <option>ファイルサイズ</option>
+                <option>アップロード日</option>
+                <option>アップロードユーザー</option>
+              </select>
+
+              <select class="form-control" style="width: 200px">
+                <option>を含む</option>
+                <option>を含まない</option>
+                <option>に等しい</option>
+                <option>で始まる</option>
+                <option>で終わる</option>
+                <option>正規表現に一致</option>
+              </select>
+
+              <input type="text" class="form-control" placeholder="値を入力" />
+
+              <button class="btn btn-outline text-danger">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+
+            <div class="condition-row">
+              <select class="form-control" style="width: 200px">
+                <option>OCRテキスト</option>
+                <option>ファイル名</option>
+                <option>ファイルタイプ</option>
+                <option>ファイルサイズ</option>
+                <option>アップロード日</option>
+                <option>アップロードユーザー</option>
+              </select>
+
+              <select class="form-control" style="width: 200px">
+                <option>を含む</option>
+                <option>を含まない</option>
+                <option>に等しい</option>
+                <option>で始まる</option>
+                <option>で終わる</option>
+                <option>正規表現に一致</option>
+              </select>
+
+              <input type="text" class="form-control" placeholder="値を入力" />
+
+              <button class="btn btn-outline text-danger">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+
+            <div class="add-condition mt-2">
+              <i class="fas fa-plus-circle"></i>
+              <span>条件を追加</span>
+            </div>
+
+            <div class="or-divider">
+              <span class="or-divider-text">または</span>
+            </div>
+
+            <div class="condition-row">
+              <select class="form-control" style="width: 200px">
+                <option>ファイルタイプ</option>
+                <option>ファイル名</option>
+                <option>OCRテキスト</option>
+                <option>ファイルサイズ</option>
+                <option>アップロード日</option>
+                <option>アップロードユーザー</option>
+              </select>
+
+              <select class="form-control" style="width: 200px">
+                <option>のいずれかである</option>
+                <option>のいずれでもない</option>
+              </select>
+
+              <div style="flex: 1">
+                <div class="d-flex gap-1 flex-wrap">
+                  <span class="badge badge-primary p-2 mb-1"
+                    >PDF <i class="fas fa-times ml-1"></i
+                  ></span>
+                  <span class="badge badge-primary p-2 mb-1"
+                    >DOC <i class="fas fa-times ml-1"></i
+                  ></span>
+                  <span class="badge badge-primary p-2 mb-1"
+                    >DOCX <i class="fas fa-times ml-1"></i
+                  ></span>
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="値を追加..."
+                  style="margin-top: 5px"
+                />
+              </div>
+
+              <button class="btn btn-outline text-danger">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+
+            <div class="add-condition mt-2">
+              <i class="fas fa-plus-circle"></i>
+              <span>OR条件グループを追加</span>
+            </div>
+
+            <hr class="my-4" />
+
+            <h4>アクション設定</h4>
+            <p class="text-muted mb-3" style="font-size: var(--fs-sm)">
+              条件に一致した場合に実行するアクションを設定します。
+            </p>
+
+            <div class="form-group">
+              <label>ファイル名変更</label>
+              <div class="d-flex gap-2 align-items-center mb-2">
+                <input type="checkbox" checked />
+                <span>ファイル名を変更する</span>
+              </div>
+              <input
+                type="text"
+                class="form-control"
+                value="{プロジェクト名}_{書類種類}_{年月日}"
+              />
+              <div class="mt-2">
+                <span class="variable-tag mr-1">{プロジェクト名}</span>
+                <span class="variable-tag mr-1">{書類種類}</span>
+                <span class="variable-tag mr-1">{年月日}</span>
+                <span class="variable-tag mr-1">{取引先}</span>
+                <span class="variable-tag mr-1">{版数}</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>フォルダ移動</label>
+              <div class="d-flex gap-2 align-items-center mb-2">
+                <input type="checkbox" checked />
+                <span>指定フォルダに移動する</span>
+              </div>
+              <div class="folder-path-display">
+                <i class="fas fa-folder text-warning"></i>
+                <span class="folder-path-text">契約書類/重要書類</span>
+                <i class="fas fa-chevron-down ml-auto"></i>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>タグ付与</label>
+              <div class="d-flex gap-2 align-items-center mb-2">
+                <input type="checkbox" checked />
+                <span>タグを付与する</span>
+              </div>
+              <div class="tag-input-container">
+                <span class="tag"
+                  >契約書 <i class="fas fa-times tag-remove"></i
+                ></span>
+                <span class="tag"
+                  >重要書類 <i class="fas fa-times tag-remove"></i
+                ></span>
+                <input
+                  type="text"
+                  class="tag-input"
+                  placeholder="タグを入力..."
+                />
+              </div>
+              <div class="tag-suggestion mt-2">
+                <span class="tag">売買</span>
+                <span class="tag">賃貸</span>
+                <span class="tag">許認可</span>
+                <span class="tag">図面</span>
+                <span class="tag">建築確認</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>通知</label>
+              <div class="d-flex gap-2 align-items-center mb-2">
+                <input type="checkbox" />
+                <span>ユーザーに通知する</span>
+              </div>
+              <select class="form-control" disabled>
+                <option>全ユーザー</option>
+                <option>プロジェクト担当者</option>
+                <option>管理者のみ</option>
+                <option>特定のユーザー...</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary mr-2">キャンセル</button>
+            <button class="btn btn-primary">
+              <i class="fas fa-save mr-1"></i> 保存
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // モーダル表示・非表示の制御
+      document
+        .querySelector(".btn-primary")
+        .addEventListener("click", function () {
+          document.querySelector(".modal-backdrop").style.display = "flex";
+        });
+
+      document
+        .querySelector("#closeModal, .modal-backdrop .btn-secondary")
+        .addEventListener("click", function () {
+          document.querySelector(".modal-backdrop").style.display = "none";
+        });
+    </script>
+  </body>
+</html>

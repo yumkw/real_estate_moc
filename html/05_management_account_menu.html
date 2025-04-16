@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ユーザー管理 - 不動産プロジェクト書類管理</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/pages.css" />
+    <link rel="stylesheet" href="../css/layout.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
+    <style>
+      /* アカウント画面の表示修正用スタイル */
+      .user-container {
+        background-color: white;
+        border-radius: var(--radius-lg);
+        padding: var(--space-5);
+        box-shadow: var(--shadow);
+      }
+
+      .user-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--space-4);
+      }
+
+      /* 検索ボックスとフィルター用スタイル */
+      .user-search {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: var(--space-3);
+        margin-bottom: var(--space-4);
+      }
+
+      .search-box {
+        position: relative;
+        min-width: 250px;
+        max-width: 400px;
+        flex-grow: 1;
+      }
+
+      .search-box input {
+        padding-left: 36px;
+      }
+
+      .search-icon {
+        position: absolute;
+        top: 50%;
+        left: 12px;
+        transform: translateY(-50%);
+        color: var(--gray-500);
+      }
+
+      /* テーブル用スタイル */
+      .user-table {
+        overflow-x: auto;
+        margin-bottom: var(--space-4);
+      }
+
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .table th,
+      .table td {
+        padding: var(--space-3);
+        border-bottom: 1px solid var(--gray-200);
+        text-align: left;
+      }
+
+      .table th {
+        background-color: var(--gray-100);
+        font-weight: 500;
+        color: var(--gray-800);
+      }
+
+      .table td {
+        vertical-align: middle;
+      }
+
+      .table tbody tr:hover {
+        background-color: rgba(0, 0, 0, 0.02);
+      }
+
+      /* ユーザー詳細スタイル */
+      .user-details {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+      }
+
+      .user-name {
+        font-weight: 500;
+      }
+
+      .user-email {
+        font-size: var(--fs-sm);
+        color: var(--gray-600);
+      }
+
+      /* ユーザーアクションツールバー */
+      .user-actions {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        margin-bottom: var(--space-4);
+        flex-wrap: wrap;
+      }
+
+      /* ロールバッジ */
+      .role-admin,
+      .role-manager,
+      .role-staff,
+      .role-guest {
+        display: inline-block;
+        padding: var(--space-1) var(--space-2);
+        border-radius: var(--radius-full);
+        font-size: var(--fs-xs);
+        font-weight: 500;
+      }
+
+      .role-admin {
+        background-color: var(--blue-100);
+        color: var(--blue-800);
+      }
+
+      .role-manager {
+        background-color: var(--green-100);
+        color: var(--green-800);
+      }
+
+      .role-staff {
+        background-color: var(--orange-100);
+        color: var(--orange-800);
+      }
+
+      .role-guest {
+        background-color: var(--gray-200);
+        color: var(--gray-800);
+      }
+
+      /* ステータス表示 */
+      .status-active,
+      .status-inactive,
+      .status-pending,
+      .status-locked {
+        display: inline-flex;
+        align-items: center;
+        font-size: var(--fs-sm);
+      }
+
+      .status-active {
+        color: var(--success);
+      }
+
+      .status-inactive {
+        color: var(--gray-500);
+      }
+
+      .status-pending {
+        color: var(--warning);
+      }
+
+      .status-locked {
+        color: var(--danger);
+      }
+
+      /* アクティビティログスタイル */
+      .activity-log-filters {
+        display: flex;
+        gap: var(--space-2);
+        margin-bottom: var(--space-4);
+        overflow-x: auto;
+        padding-bottom: var(--space-2);
+      }
+
+      .activity-log-filter {
+        padding: var(--space-2) var(--space-3);
+        background-color: var(--gray-100);
+        border-radius: var(--radius);
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.2s ease;
+      }
+
+      .activity-log-filter:hover {
+        background-color: var(--gray-200);
+      }
+
+      .activity-log-filter.active {
+        background-color: var(--primary);
+        color: white;
+      }
+
+      .activity-log-date-range {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        margin-bottom: var(--space-4);
+        flex-wrap: wrap;
+        padding: var(--space-3);
+        background-color: var(--gray-100);
+        border-radius: var(--radius);
+      }
+
+      .activity-log-date-range input[type="date"] {
+        width: auto;
+        min-width: 150px;
+      }
+
+      .activity-log-item {
+        display: flex;
+        padding: var(--space-3);
+        border-bottom: 1px solid var(--gray-200);
+      }
+
+      .activity-log-item:last-child {
+        border-bottom: none;
+      }
+
+      .activity-log-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: var(--space-3);
+        flex-shrink: 0;
+      }
+
+      .activity-log-icon.login {
+        background-color: var(--blue-100);
+        color: var(--blue-800);
+      }
+
+      .activity-log-icon.upload {
+        background-color: var(--green-100);
+        color: var(--green-800);
+      }
+
+      .activity-log-icon.edit {
+        background-color: var(--orange-100);
+        color: var(--orange-800);
+      }
+
+      .activity-log-icon.delete {
+        background-color: var(--danger-light);
+        color: var(--danger);
+      }
+
+      .activity-log-content {
+        flex: 1;
+      }
+
+      .activity-log-message {
+        margin-bottom: var(--space-1);
+      }
+
+      .activity-log-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-3);
+        font-size: var(--fs-sm);
+        color: var(--gray-600);
+      }
+
+      .activity-log-meta span {
+        display: flex;
+        align-items: center;
+        gap: var(--space-1);
+      }
+
+      /* ページネーション改善 */
+      .pagination {
+        display: flex;
+        padding-left: 0;
+        list-style: none;
+        border-radius: var(--radius);
+      }
+
+      .page-link {
+        position: relative;
+        display: block;
+        padding: var(--space-2) var(--space-3);
+        margin-left: -1px;
+        line-height: 1.25;
+        color: var(--primary);
+        background-color: white;
+        border: 1px solid var(--gray-300);
+      }
+
+      .page-item:first-child .page-link {
+        margin-left: 0;
+        border-top-left-radius: var(--radius);
+        border-bottom-left-radius: var(--radius);
+      }
+
+      .page-item:last-child .page-link {
+        border-top-right-radius: var(--radius);
+        border-bottom-right-radius: var(--radius);
+      }
+
+      .page-item.active .page-link {
+        z-index: 3;
+        color: white;
+        background-color: var(--primary);
+        border-color: var(--primary);
+      }
+
+      .page-item.disabled .page-link {
+        color: var(--gray-500);
+        pointer-events: none;
+        cursor: auto;
+        background-color: white;
+        border-color: var(--gray-200);
+      }
+
+      /* セキュリティ設定スタイル */
+      .security-section {
+        margin-bottom: var(--space-5);
+      }
+
+      .security-item {
+        background-color: var(--gray-100);
+        border-radius: var(--radius);
+        padding: var(--space-4);
+        margin-bottom: var(--space-4);
+      }
+
+      .security-item-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--space-3);
+      }
+
+      .security-item-title {
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+      }
+
+      .security-item-status {
+        font-size: var(--fs-sm);
+        padding: var(--space-1) var(--space-2);
+        border-radius: var(--radius-full);
+      }
+
+      .security-item-status.enabled {
+        background-color: var(--success-light);
+        color: var(--success);
+      }
+
+      .security-item-status.disabled {
+        background-color: var(--gray-200);
+        color: var(--gray-600);
+      }
+
+      .security-item-description {
+        margin-bottom: var(--space-3);
+        color: var(--gray-600);
+      }
+
+      /* モダンなチェックボックス */
+      .custom-control {
+        position: relative;
+        display: block;
+        min-height: 1.5rem;
+        padding-left: 1.5rem;
+        margin-bottom: var(--space-2);
+      }
+
+      .custom-control-input {
+        position: absolute;
+        left: -9999px;
+        width: 1rem;
+        height: 1rem;
+        opacity: 0;
+      }
+
+      .custom-control-label {
+        position: relative;
+        margin-bottom: 0;
+        vertical-align: top;
+        cursor: pointer;
+      }
+
+      .custom-control-label::before {
+        position: absolute;
+        top: 0.25rem;
+        left: -1.5rem;
+        display: block;
+        width: 1rem;
+        height: 1rem;
+        content: "";
+        background-color: var(--white);
+        border: 1px solid var(--gray-400);
+        border-radius: var(--radius-sm);
+      }
+
+      .custom-control-label::after {
+        position: absolute;
+        top: 0.25rem;
+        left: -1.5rem;
+        display: block;
+        width: 1rem;
+        height: 1rem;
+        content: "";
+        background: no-repeat 50%/50% 50%;
+      }
+
+      .custom-control-input:checked ~ .custom-control-label::before {
+        border-color: var(--primary);
+        background-color: var(--primary);
+      }
+
+      .custom-control-input:checked ~ .custom-control-label::after {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26l2.974 2.99L8 2.193z'/%3E%3C/svg%3E");
+      }
+
+      /* レスポンシブ対応 */
+      @media (max-width: 768px) {
+        .user-actions {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .ml-auto {
+          margin-left: 0;
+          margin-top: var(--space-2);
+        }
+
+        .activity-log-date-range {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .activity-log-date-range input[type="date"] {
+          width: 100%;
+        }
+
+        .activity-log-meta {
+          flex-direction: column;
+          gap: var(--space-1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- サイドバー -->
+    <div class="sidebar">
+      <div class="sidebar-sticky">
+        <div class="p-4">
+          <a href="02_User_home.html" class="navbar-brand">ドキュメント管理</a>
+        </div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="02_User_home.html">
+              <i class="fas fa-home mr-2"></i>
+              ホーム
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-file-alt mr-2"></i>
+              最近のドキュメント
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="06_User_notification.html">
+              <i class="fas fa-bell mr-2"></i>
+              通知
+              <span class="badge badge-primary ml-2">3</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="p-4 mt-4">
+          <h6
+            class="text-muted text-uppercase"
+            style="font-size: var(--fs-xs); letter-spacing: 1px"
+          >
+            プロジェクト
+          </h6>
+        </div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="11_project_home.html">
+              <i class="fas fa-building mr-2"></i>
+              グリーンハイツ渋谷
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-building mr-2"></i>
+              パークレジデンス六本木
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-building mr-2"></i>
+              サンライズガーデン横浜
+            </a>
+          </li>
+        </ul>
+
+        <div class="p-4 mt-4">
+          <h6
+            class="text-muted text-uppercase"
+            style="font-size: var(--fs-xs); letter-spacing: 1px"
+          >
+            設定
+          </h6>
+        </div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="09_User_account_menu.html">
+              <i class="fas fa-cog mr-2"></i>
+              アカウント設定
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="10_rules_settings.html">
+              <i class="fas fa-sliders-h mr-2"></i>
+              ルール設定
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-users mr-2"></i>
+              ユーザー管理
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="01_User_login.html">
+              <i class="fas fa-sign-out-alt mr-2"></i>
+              ログアウト
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <div class="main-content">
+      <!-- ヘッダー部分 -->
+      <div class="user-container">
+        <div class="user-header">
+          <h1>ユーザー管理</h1>
+          <button class="btn btn-primary" id="btnAddUser">
+            <i class="fas fa-user-plus mr-1"></i> 新規ユーザー追加
+          </button>
+        </div>
+
+        <!-- タブメニュー -->
+        <div class="tab-menu">
+          <div class="tab-item active" data-tab="users-list">ユーザー一覧</div>
+          <div class="tab-item" data-tab="permissions">権限設定</div>
+          <div class="tab-item" data-tab="security">セキュリティ設定</div>
+          <div class="tab-item" data-tab="access-log">アクセスログ</div>
+        </div>
+
+        <!-- タブコンテンツ読み込み領域 -->
+        <div id="tab-content">
+          <!-- タブの内容がここに動的に読み込まれます -->
+          <div
+            id="loading"
+            style="display: none; text-align: center; padding: 2rem"
+          >
+            <i
+              class="fas fa-spinner fa-spin"
+              style="font-size: 2rem; color: var(--primary)"
+            ></i>
+            <p>読み込み中...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- モーダルコンテナ -->
+    <div id="modal-container" style="display: none"></div>
+
+    <script src="../js/user_account_menu.js"></script>
+  </body>
+</html>
