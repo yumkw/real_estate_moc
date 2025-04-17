@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>プロジェクト一覧 - 不動産プロジェクト書類管理</title>
+    <title>プロジェクト一覧 - 不動産デューデリジェンス</title>
     <link rel="stylesheet" href="../css/main.css" />
     <link rel="stylesheet" href="../css/pages.css" />
     <link
@@ -273,7 +273,7 @@
       <button class="toggle-sidebar" id="toggleSidebar">
         <i class="fas fa-bars"></i>
       </button>
-      <div class="top-bar-brand">不動産プロジェクト書類管理</div>
+      <div class="top-bar-brand">不動産デューデリジェンス</div>
       <div class="top-bar-actions">
         <div class="top-bar-notification">
           <a href="06_User_notification.html" class="btn-icon">
@@ -294,20 +294,23 @@
               <i class="fas fa-question-circle"></i>
               <span>問い合わせ</span>
             </div>
-            <div class="account-menu-item">
+            <a href="#" class="account-menu-item">
               <i class="fas fa-cog"></i>
               <span>設定</span>
-            </div>
+            </a>
             <!-- 管理者ユーザーの場合のみ表示 -->
-            <div class="account-menu-item admin-only">
+            <a
+              href="05_management_account_menu.html"
+              class="account-menu-item admin-only"
+            >
               <i class="fas fa-users-cog"></i>
               <span>管理者メニュー</span>
-            </div>
+            </a>
             <hr style="margin: 5px 0; border-top: 1px solid var(--gray-200)" />
-            <div class="account-menu-item">
+            <a href="01_User_login.html" class="account-menu-item">
               <i class="fas fa-sign-out-alt"></i>
               <span>ログアウト</span>
-            </div>
+            </a>
           </div>
         </div>
       </div>
