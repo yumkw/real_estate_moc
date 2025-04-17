@@ -1612,7 +1612,7 @@
   justify-content: flex-end;
 }
 
-/* 新着通知画面用（06_User_notification.html） */
+/* 新着通知画面用（04_User_notification.html） */
 :root {
   --unread-bg: rgba(51, 51, 51, 0.05);
   --hover-bg: rgba(0, 0, 0, 0.03);

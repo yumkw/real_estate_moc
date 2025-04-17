@@ -223,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (viewResultsButton) {
     viewResultsButton.addEventListener("click", function () {
       // ここで結果確認画面へ遷移
-      window.location.href = "06_User_notification.html";
+      window.location.href = "04_User_notification.html";
     });
   }
 
